@@ -107,7 +107,7 @@ const Header = () => {
         <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
            {/* Using the text logo provided */}
            <img 
-            src="/blockvalley/BlockValley_Logo_FullText.png" 
+            src="/BlockValley_Logo_FullText.png" 
             alt="Block Valley" 
             className="h-10 md:h-12 object-contain"
             onError={(e) => {
@@ -203,7 +203,7 @@ const Hero = () => {
           <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-all duration-700 bg-gray-100">
              {/* Use the video from media folder */}
             <video autoPlay muted loop className="w-full h-full object-cover">
-              <source src="/blockvalley/BlockValleyVideo.mp4" type="video/mp4" />
+              <source src="/BlockValleyVideo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
              {/* Gradient Overlay for text readability if needed later */}
@@ -377,7 +377,7 @@ const ValleyCastSection = () => {
              {/* ValleyCast Image */}
             <div className="relative z-10 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-1 border border-gray-700 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                <div className="bg-black rounded-2xl overflow-hidden aspect-video relative flex items-center justify-center group cursor-pointer">
-                  <img src="/blockvalley/VALLEYCAST8AM2.png" alt="ValleyCast Latest Episode" className="w-full h-full object-cover" />
+                  <img src="/VALLEYCAST8AM2.png" alt="ValleyCast Latest Episode" className="w-full h-full object-cover" />
                </div>
                <div className="p-6">
                  <div className="flex justify-between items-center mb-2">
@@ -435,7 +435,7 @@ const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <img src="/blockvalley/BlockValley_Logo_FullText.png" alt="Block Valley Full Logo" className="h-12 w-auto mb-6" />
+            <img src="/BlockValley_Logo_FullText.png" alt="Block Valley Full Logo" className="h-12 w-auto mb-6" />
             <p className="text-xl text-gray-800 font-bold mb-6 max-w-md">
               Combining capital, technology, narrative, and humanity to build the frontier.
             </p>
