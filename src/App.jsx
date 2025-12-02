@@ -5,6 +5,130 @@ import {
   Linkedin, Twitter, Mail
 } from 'lucide-react';
 
+// --- 0. INTRO ANIMATION COMPONENT ---
+const IntroAnimation = ({ onComplete }) => {
+  const [textIndex, setTextIndex] = useState(0);
+  const [isExiting, setIsExiting] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const phrases = [
+    "Web3 Accelerator",
+    "Real World Assets",
+    "Cryptocurrency",
+    "DeFi Architecture",
+    "Global Influence",
+    "Future Economies",
+    "Cognition Network"
+  ];
+
+  // Rotate text every 2.5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTextIndex((prev) => (prev + 1) % phrases.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleClick = () => {
+    setIsExiting(true);
+    // Wait for animation (zoom effect) to finish before unmounting
+    setTimeout(() => {
+      onComplete();
+    }, 1200); 
+  };
+
+  return (
+    <div 
+      className={`fixed inset-0 z-[10000] flex items-center justify-center bg-white cursor-pointer overflow-hidden transition-all duration-[1200ms] ease-[cubic-bezier(0.7,0,0.3,1)]
+        ${isExiting ? 'opacity-0 scale-[5] pointer-events-none' : 'opacity-100 scale-100'}
+      `}
+      onClick={handleClick}
+    >
+      {/* Background Subtle Grid */}
+      <div className="absolute inset-0 opacity-[0.03]" 
+           style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+      </div>
+
+      <div className="relative w-full h-full flex items-center justify-center">
+        
+        {/* ROTATING LOGO STRUCTURE */}
+        <div 
+          className={`relative w-[60vmin] h-[60vmin] transition-all duration-700 ease-out ${isHovering ? 'scale-110' : 'scale-100'}`}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <div className={`absolute inset-0 w-full h-full animate-spin-slow ${isExiting ? 'animate-spin-fast' : ''}`}>
+            
+            {/* Pink Lobe */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
+                 style={{ transform: `rotate(0deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+               <div className="w-full h-full rounded-full bg-gradient-to-b from-pink-500 to-pink-300 mix-blend-multiply opacity-80 blur-xl"></div>
+            </div>
+
+            {/* Blue Lobe */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
+                 style={{ transform: `rotate(120deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+               <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-blue-300 mix-blend-multiply opacity-80 blur-xl"></div>
+            </div>
+
+            {/* Green Lobe */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
+                 style={{ transform: `rotate(240deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+               <div className="w-full h-full rounded-full bg-gradient-to-b from-green-500 to-green-300 mix-blend-multiply opacity-80 blur-xl"></div>
+            </div>
+
+          </div>
+          
+          {/* Inner White Core */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-white rounded-full blur-xl"></div>
+        </div>
+
+        {/* DIGITAL TEXT OVERLAY */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none">
+          {phrases.map((phrase, idx) => (
+            <h2 
+              key={idx}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl md:text-5xl font-bold tracking-tighter uppercase transition-all duration-1000 transform whitespace-nowrap
+                ${idx === textIndex ? 'opacity-20 blur-0 scale-100' : 'opacity-0 blur-md scale-90'}
+              `}
+              style={{ color: '#111' }}
+            >
+              {phrase}
+            </h2>
+          ))}
+        </div>
+
+        {/* TRENDY INTERACTIVE BUTTON */}
+        <div 
+          className="absolute bottom-20 left-1/2 -translate-x-1/2 group"
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          <button className="relative px-8 py-3 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-gray-900 font-mono text-xs uppercase tracking-[0.2em] overflow-hidden transition-all duration-500 group-hover:tracking-[0.3em] group-hover:border-transparent hover:shadow-xl">
+            <span className="relative z-10 group-hover:text-white transition-colors duration-500">Enter Valley</span>
+            {/* Hover Fill Effect */}
+            <div className="absolute inset-0 bg-black translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"></div>
+          </button>
+        </div>
+
+      </div>
+      
+      <style>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 10s linear infinite;
+        }
+        .animate-spin-fast {
+          animation: spin-slow 1.5s cubic-bezier(0.5, 0, 1, 1) infinite;
+        }
+      `}</style>
+    </div>
+  );
+};
+
 // --- 1. CUSTOM CURSOR COMPONENT (Instant, Crisp, Branded) ---
 const CustomCursor = () => {
   const cursorRef = useRef(null);
@@ -47,10 +171,23 @@ const CustomCursor = () => {
   return (
     <>
       <style>{`
+        /* DEFAULT: Hide Cursor logic completely to prevent touch interference */
+        .custom-cursor-container {
+          display: none;
+        }
+
+        /* ONLY enable on devices that support hover AND have a fine pointer (Mouse/Trackpad) */
         @media (hover: hover) and (pointer: fine) {
+          /* Hide the system cursor */
           body { cursor: none; }
           a, button, [role="button"] { cursor: none; }
+          
+          /* Show the custom cursor container */
+          .custom-cursor-container {
+            display: flex;
+          }
         }
+
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
@@ -63,7 +200,7 @@ const CustomCursor = () => {
       {/* Main Cursor Container - Follows Mouse Instantly */}
       <div 
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center will-change-transform"
+        className="custom-cursor-container fixed top-0 left-0 pointer-events-none z-[9999] items-center justify-center will-change-transform"
         style={{ transform: 'translate(-50%, -50%)' }} // Initial centering
       >
         {/* The Gradient Ring */}
@@ -751,8 +888,11 @@ const Footer = () => {
 };
 
 const App = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
   return (
     <div className="font-sans antialiased text-gray-900 bg-white selection:bg-pink-100 selection:text-pink-900">
+      {showIntro && <IntroAnimation onComplete={() => setShowIntro(false)} />}
       <CustomCursor />
       <style>{`
         @keyframes bounce-slow {
