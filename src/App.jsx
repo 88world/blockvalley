@@ -4,6 +4,7 @@ import {
   ArrowRight, Play, Mic, ChevronDown, 
   Linkedin, Twitter, Mail
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // --- 0. INTRO ANIMATION COMPONENT ---
 const IntroAnimation = ({ onComplete }) => {
@@ -552,7 +553,7 @@ const Header = () => {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex space-x-8">
+        <div className="hidden md:flex space-x-8 items-center">
           {['Identity', 'Philosophy', 'ValleyCast', 'Team', 'Contact'].map((item) => (
             <button 
               key={item} 
@@ -563,6 +564,12 @@ const Header = () => {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
             </button>
           ))}
+          <Link 
+            to="/deck"
+            className="px-6 py-2.5 bg-gradient-to-r from-pink-500/20 via-blue-500/20 to-green-500/20 backdrop-blur-md border border-pink-500/30 text-gray-900 font-bold rounded-full hover:from-pink-500/30 hover:via-blue-500/30 hover:to-green-500/30 hover:border-pink-500/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 interactive-hover"
+          >
+            Deck
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -583,6 +590,13 @@ const Header = () => {
               {item}
             </button>
           ))}
+          <Link 
+            to="/deck"
+            className="text-left text-lg font-bold text-gray-800 bg-white/80 backdrop-blur-md border-2 border-gray-200 py-3 px-4 rounded-lg hover:bg-white hover:border-gray-300 transition-all shadow-lg"
+            onClick={() => setIsOpen(false)}
+          >
+            📊 Deck
+          </Link>
         </div>
       )}
     </nav>
@@ -888,11 +902,20 @@ const Footer = () => {
 };
 
 const App = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    // Check if intro has been shown in this session
+    const introShown = sessionStorage.getItem('introShown');
+    return !introShown;
+  });
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('introShown', 'true');
+    setShowIntro(false);
+  };
 
   return (
     <div className="font-sans antialiased text-gray-900 bg-white selection:bg-pink-100 selection:text-pink-900">
-      {showIntro && <IntroAnimation onComplete={() => setShowIntro(false)} />}
+      {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
       <CustomCursor />
       <style>{`
         @keyframes bounce-slow {
