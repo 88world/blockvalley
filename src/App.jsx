@@ -595,7 +595,7 @@ const Header = () => {
             className="text-left text-lg font-bold text-gray-800 bg-white/80 backdrop-blur-md border-2 border-gray-200 py-3 px-4 rounded-lg hover:bg-white hover:border-gray-300 transition-all shadow-lg"
             onClick={() => setIsOpen(false)}
           >
-            📊 Deck
+            Deck
           </Link>
         </div>
       )}
