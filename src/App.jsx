@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Menu, X, Globe, Cpu, Users, Zap, Layers, 
   ArrowRight, Play, Mic, ChevronDown, 
-  Linkedin, Twitter, Mail
+  Twitter, Mail, ShieldCheck
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 // --- 0. INTRO ANIMATION COMPONENT ---
 const IntroAnimation = ({ onComplete }) => {
@@ -445,7 +445,7 @@ const InteractiveCard = ({ item }) => {
             </div>
         </div>
         
-        <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight drop-shadow-md">{item.title}</h3>
+        <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight drop-shadow-md text-white">{item.title}</h3>
         <p className="text-white/95 font-medium text-lg leading-relaxed opacity-90 group-hover:opacity-100">
           {item.desc}
         </p>
@@ -525,10 +525,20 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const menuItems = [
+    { label: 'Identity', type: 'scroll', target: 'identity' },
+    { label: 'Philosophy', type: 'scroll', target: 'philosophy' },
+    { label: 'ValleyCast', type: 'scroll', target: 'valleycast' },
+    { label: 'Team', type: 'scroll', target: 'team' },
+    { label: 'Contact', type: 'scroll', target: 'contact' },
+    { label: 'Media Kit', type: 'link', target: 'https://drive.google.com/' },
+    { label: 'Deck', type: 'route', target: '/deck' }
+  ];
 
   const scrollTo = (id) => {
     setIsOpen(false);
@@ -536,133 +546,217 @@ const Header = () => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-md py-3' : 'bg-transparent py-5'}`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        {/* Logo Area */}
-        <div className="flex items-center space-x-2 cursor-pointer interactive-hover" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <img 
-               src="/BlockValley_Logo_Dark.png" 
-               alt="Block Valley" 
-               className="h-10 md:h-12 object-contain"
-            onError={(e) => {
-              e.target.style.display = 'none'; 
-              e.target.nextSibling.style.display = 'block'; 
-            }} 
-          />
-          <span className="hidden text-2xl font-bold tracking-tighter" style={{ display: 'none' }}>BLOCK VALLEY</span>
-        </div>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex space-x-8 items-center">
-          {['Identity', 'Philosophy', 'ValleyCast', 'Team', 'Contact'].map((item) => (
-            <button 
-              key={item} 
-              onClick={() => scrollTo(item.toLowerCase().replace(' ', '-'))}
-              className="text-gray-800 font-medium hover:text-pink-600 transition-colors relative group interactive-hover"
-            >
-              {item}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-          ))}
-          <Link 
-            to="/deck"
-            className="px-6 py-2.5 bg-gradient-to-r from-pink-500/20 via-blue-500/20 to-green-500/20 backdrop-blur-md border border-pink-500/30 text-gray-900 font-bold rounded-full hover:from-pink-500/30 hover:via-blue-500/30 hover:to-green-500/30 hover:border-pink-500/50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 interactive-hover"
+    <>
+      <header className="fixed top-0 left-0 w-full z-50 flex justify-center pt-6 pointer-events-none">
+        <nav
+          className={`pointer-events-auto transition-all duration-500 ease-out ${
+            scrolled || isOpen 
+              ? 'w-[90%] md:w-[760px] bg-white/90 backdrop-blur-2xl border border-white/60 shadow-xl shadow-bv-primary/10' 
+              : 'w-full max-w-7xl bg-transparent'
+          } rounded-full px-3 py-2.5 flex items-center justify-between mx-auto ${
+            scrolled ? 'gap-3' : 'gap-4'
+          }`}
+        >
+          {/* Logo - Switch between Full and Icon based on scroll */}
+          <div
+            className={`cursor-pointer relative flex items-center justify-center transition-all duration-300 ${
+              scrolled ? 'h-10 w-10 min-w-[40px]' : 'h-14 min-w-[180px]'
+            }`}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            Deck
-          </Link>
-        </div>
+            {/* Full Logo (Visible when NOT scrolled) */}
+            <img
+              src="/BlockValley_Logo_Dark.png"
+              alt="Block Valley"
+              className={`h-14 w-auto object-contain transition-all duration-300 absolute left-1/2 -translate-x-1/2 ${
+                scrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+              }`}
+            />
 
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-gray-800 interactive-hover" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
+            {/* Icon Logo (Visible when scrolled) */}
+            <img
+              src="/BlockValleyLogoCut.png"
+              alt="BV Icon"
+              className={`h-10 w-10 object-contain transition-all duration-300 absolute left-1/2 -translate-x-1/2 ${
+                scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'
+              }`}
+            />
+          </div>
 
-      {/* Mobile Nav */}
+          {/* Desktop Nav Pills */}
+          <div className={`hidden md:flex items-center rounded-full transition-all duration-300 ${
+            scrolled ? 'bg-transparent p-0 gap-0.5' : 'bg-bv-secondary/5 p-1.5 gap-1 backdrop-blur-sm border border-white/20'
+          }`}>
+            {menuItems.map((item, index) =>
+              item.type === 'scroll' ? (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.target)}
+                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden ${
+                    scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  {!scrolled && <span className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full shadow-sm"></span>}
+                </button>
+              ) : item.type === 'route' ? (
+                <Link
+                  key={item.label}
+                  to={item.target}
+                  className={`rounded-full text-sm font-semibold transition-all duration-300 relative group overflow-hidden flex items-center ${
+                    scrolled 
+                      ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105' 
+                      : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105 ml-2'
+                  }`}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.target}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden flex items-center ${
+                    scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  }`}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                  {!scrolled && <span className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full shadow-sm"></span>}
+                </a>
+              )
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-lg shadow-bv-primary/5 text-bv-primary border border-white/40"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </nav>
+      </header>
+
+      {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="md:hidden bg-white absolute top-full left-0 w-full shadow-lg py-4 px-6 flex flex-col space-y-4">
-          {['Identity', 'Philosophy', 'ValleyCast', 'Team', 'Contact'].map((item) => (
-            <button 
-              key={item} 
-              onClick={() => scrollTo(item.toLowerCase().replace(' ', '-'))}
-              className="text-left text-lg font-medium text-gray-800 py-2 border-b border-gray-100"
-            >
-              {item}
-            </button>
-          ))}
-          <Link 
-            to="/deck"
-            className="text-left text-lg font-bold text-gray-800 bg-white/80 backdrop-blur-md border-2 border-gray-200 py-3 px-4 rounded-lg hover:bg-white hover:border-gray-300 transition-all shadow-lg"
-            onClick={() => setIsOpen(false)}
-          >
-            Deck
-          </Link>
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-bv-primary/10 z-40 p-4 md:hidden border border-white/50">
+          <div className="flex flex-col space-y-1">
+            {menuItems.map((item) =>
+              item.type === 'scroll' ? (
+                <button
+                  key={item.label}
+                  onClick={() => scrollTo(item.target)}
+                  className="text-left py-3 px-4 text-base font-display font-semibold text-bv-secondary hover:text-bv-primary hover:bg-bv-secondary/5 rounded-xl transition-colors flex items-center justify-between group w-full"
+                >
+                  {item.label}
+                  <span className="w-2 h-2 rounded-full bg-bv-cta opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </button>
+              ) : item.type === 'route' ? (
+                <Link
+                  key={item.label}
+                  to={item.target}
+                  className="text-center py-4 px-6 text-base font-display font-bold border-2 border-pink-500 text-pink-600 rounded-2xl transition-all flex items-center justify-center group w-full hover:bg-pink-500 hover:text-white hover:scale-[1.02] mt-3"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span className="relative z-10">{item.label}</span>
+                </Link>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.target}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-left py-3 px-4 text-base font-display font-semibold text-bv-secondary hover:text-bv-primary hover:bg-bv-secondary/5 rounded-xl transition-colors flex items-center justify-between group w-full"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.label}
+                  <span className="w-2 h-2 rounded-full bg-bv-cta opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                </a>
+              )
+            )}
+          </div>
         </div>
       )}
-    </nav>
+    </>
   );
 };
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white">
-      {/* Background Ribbons */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
+    <section className="relative min-h-screen flex items-center pt-32 md:pt-20 overflow-hidden bg-bv-background">
+      {/* Background Ribbons - Refined for Liquid Glass feel */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
         <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d="M0,20 Q25,50 50,20 T100,50" fill="none" stroke="#3B82F6" strokeWidth="0.5" />
-          <path d="M0,40 Q25,10 50,40 T100,10" fill="none" stroke="#EC4899" strokeWidth="0.5" />
-          <path d="M0,60 Q25,90 50,60 T100,90" fill="none" stroke="#10B981" strokeWidth="0.5" />
-          <path d="M0,80 Q40,40 60,80 T100,30" fill="none" stroke="#EF4444" strokeWidth="0.5" />
+          <path d="M0,20 Q25,50 50,20 T100,50" fill="none" stroke="#3B82F6" strokeWidth="0.5" className="animate-float" />
+          <path d="M0,40 Q25,10 50,40 T100,10" fill="none" stroke="#0369A1" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '1s' }} />
+          <path d="M0,60 Q25,90 50,60 T100,90" fill="none" stroke="#334155" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '2s' }} />
+          <path d="M0,80 Q40,40 60,80 T100,30" fill="none" stroke="#0F172A" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '3s' }} />
         </svg>
       </div>
 
-      <div className="container mx-auto px-6 z-10 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-gray-100 text-gray-800 font-semibold text-sm tracking-wide border border-gray-200">
-            GLOBAL VENTURE STUDIO
+      <div className="container mx-auto px-6 z-10 flex flex-col lg:flex-row items-center justify-between gap-16">
+        {/* Left Content */}
+        <div className="lg:w-1/2 relative z-10">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-bv-secondary/5 text-xs font-bold tracking-widest uppercase text-bv-secondary mb-8 border border-bv-secondary/10">
+            Global Venture Studio
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight text-gray-900 mb-6">
-            Bridging Worlds. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-green-500">
-              Building Futures.
+
+          <h1 className="text-6xl md:text-7xl font-display font-bold leading-[0.95] mb-8 tracking-tight">
+            <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent animate-gradient">
+              Level Up Your Brand.
             </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-lg leading-relaxed">
-            We operate as a bridge between systems, cultures, and eras. 
-            Combining <span className="font-semibold text-gray-800">Capital × Technology × Narrative × Humanity</span> to architect the next generation of digital economies.
+
+          <p className="text-xl text-gray-700 leading-relaxed mb-10 max-w-lg font-light">
+            We operate as a bridge between systems, cultures, and eras. Combining <strong className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-semibold">Capital × Technology × Narrative × Humanity</strong> to architect the next generation of digital economies.
+            <br /><span className="bg-gradient-to-r from-pink-600 to-orange-500 bg-clip-text text-transparent font-semibold">Play. Build. Grow.</span>
           </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button className="px-8 py-4 bg-black text-white rounded-full font-bold hover:bg-gray-800 transition-transform transform hover:scale-105 flex items-center justify-center interactive-hover">
+
+          <div className="flex flex-wrap gap-4">
+            <button className="px-8 py-4 bg-bv-primary text-white rounded-full font-bold hover:bg-bv-secondary shadow-lg shadow-bv-primary/20 transition-transform transform hover:scale-105 flex items-center justify-center interactive-hover">
               Our Vision <ArrowRight className="ml-2 w-5 h-5" />
             </button>
-            <button className="px-8 py-4 bg-white text-black border-2 border-black rounded-full font-bold hover:bg-gray-50 transition-transform transform hover:scale-105 interactive-hover">
+            <button className="px-8 py-4 bg-white/50 text-bv-primary border border-bv-secondary/20 rounded-full font-bold hover:bg-white transition-all backdrop-blur-sm interactive-hover">
               Explore Services
             </button>
           </div>
         </div>
-        
-        <div className="relative">
-          <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-all duration-700 bg-gray-100 relative">
-            {/* Hero: autoplaying video (muted, loop) with poster fallback */}
-            <video poster="/BlockValley_Logo_FullText.png" autoPlay muted loop playsInline className="w-full h-full object-cover relative z-10">
+
+        {/* Right Content - Abstract Card Graphic */}
+        <div className="lg:w-1/2 relative w-full">
+          <div className="relative aspect-[4/3] bg-white/40 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-bv-primary/5 border border-white/60 backdrop-blur-3xl">
+            {/* Video Background */}
+            <video
+              poster="/BlockValley_Logo_FullText.png"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover opacity-90 mix-blend-multiply"
+            >
               <source src="/IMG_4443.MP4" type="video/mp4" />
               {/* Fallback image */}
               <img src="/BlockValley_Logo_FullText.png" alt="Block Valley Banner" className="w-full h-full object-cover" />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-20"></div>
+
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-bv-primary/10 to-transparent pointer-events-none"></div>
+
+            {/* Floating Hubs Pill */}
+            <div className="absolute bottom-8 left-8 bg-white/80 backdrop-blur-md shadow-lg shadow-bv-primary/5 rounded-2xl p-4 flex items-center gap-4 border border-white/50 max-w-xs z-20">
+              <div className="w-10 h-10 rounded-full bg-bv-cta/10 text-bv-cta flex items-center justify-center">
+                <Globe size={20} />
+              </div>
+              <div>
+                <div className="text-[10px] font-bold text-bv-secondary/80 uppercase tracking-wider">Hubs In</div>
+                <div className="text-sm font-bold text-bv-primary">HK • SG • UAE • US</div>
+              </div>
+            </div>
           </div>
-          
-          <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl border border-gray-100 hidden md:block animate-bounce-slow z-30">
-             <div className="flex items-center space-x-3">
-               <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold">
-                 <Globe size={20} />
-               </div>
-               <div>
-                 <p className="text-xs text-gray-500 uppercase font-semibold">Hubs In</p>
-                 <p className="text-sm font-bold">HK • SG • UAE • US</p>
-               </div>
-             </div>
-          </div>
+
+          {/* Background Decor Layer behind the card */}
+          <div className="absolute -inset-4 bg-gradient-to-r from-bv-cta/20 to-purple-500/20 rounded-[3rem] blur-3xl -z-10 opacity-60 animate-pulse-slow"></div>
         </div>
       </div>
     </section>
@@ -671,58 +765,66 @@ const Hero = () => {
 
 const IdentitySection = () => {
   return (
-    <section id="identity" className="py-24 bg-gray-50 relative overflow-hidden">
+    <section id="identity" className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-gray-50">
+      {/* Background Ambient Effects */}
+      <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-pink-200/20 via-purple-200/20 to-transparent rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-gradient-to-tr from-blue-200/20 via-cyan-200/20 to-transparent rounded-full blur-[100px]"></div>
+      
       <div className="container mx-auto px-6 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">The Block Valley Identity</h2>
-          <p className="text-xl text-gray-600">
-            A Global Venture Studio focused on building, scaling, and institutionalizing the next generation of digital economies.
-          </p>
+        {/* Section Header */}
+        <div className="mb-20 flex flex-col items-start w-full max-w-4xl">
+          <span className="text-pink-600 font-bold tracking-[0.3em] uppercase mb-6 text-xs">Who We Are</span>
+          <h2 className="text-5xl md:text-7xl lg:text-8xl font-display font-black leading-[0.9] tracking-tight">
+            <span className="text-gray-900">THE IDENTITY</span> <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500">MATRIX.</span>
+          </h2>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-blue-500 hover:-translate-y-2 transition-transform duration-300 interactive-hover">
-            <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-              <Layers className="text-blue-600 w-7 h-7" />
+        {/* Cards Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 w-full">
+          {/* Card 1: Venture Studio */}
+          <div className="md:col-span-5 md:col-start-2 group interactive-hover z-10">
+            <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border border-white/40 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-pink-500/10 transition-all duration-500 hover:-translate-y-1">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform duration-500">
+                <Layers size={32} />
+              </div>
+              <h3 className="text-3xl font-display font-bold mb-4 text-gray-900">Venture Studio</h3>
+              <p className="text-gray-700 leading-relaxed text-lg">Architecting new financial and technological systems from the ground up. We don't just invest; we build the infrastructure.</p>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Venture Studio</h3>
-            <p className="text-gray-600">Architecting new financial and technological systems from the ground up.</p>
           </div>
 
-           <div className="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-pink-500 hover:-translate-y-2 transition-transform duration-300 interactive-hover">
-            <div className="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mb-6">
-              <Mic className="text-pink-600 w-7 h-7" />
+          {/* Card 2: Influence Engine - Positioned lower */}
+          <div className="md:col-span-6 md:col-start-7 md:mt-32 group interactive-hover z-10">
+            <div className="relative bg-white/30 backdrop-blur-2xl p-12 rounded-[2.5rem] border-2 border-purple-500/40 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/30 transform md:rotate-1 hover:rotate-0 transition-all duration-700 hover:-translate-y-2 overflow-hidden">
+              {/* Animated gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              {/* Floating orbs */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-blue-400/30 to-purple-400/30 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000 delay-150"></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:scale-110 transition-all duration-500">
+                  <Mic size={32} />
+                </div>
+                <h3 className="text-4xl font-display font-bold mb-4 text-gray-900">
+                  Influence Engine
+                </h3>
+                <p className="text-gray-700 leading-relaxed text-lg">
+                  Enabling global influence through media, community, and powerful narrative construction. We amplify the signal in the noise.
+                </p>
+              </div>
             </div>
-            <h3 className="text-2xl font-bold mb-4">Influence Engine</h3>
-            <p className="text-gray-600">Enabling global influence through media, community, and powerful narrative construction.</p>
           </div>
 
-           <div className="bg-white p-8 rounded-2xl shadow-lg border-b-4 border-green-500 hover:-translate-y-2 transition-transform duration-300 interactive-hover">
-            <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mb-6">
-              <Layers className="text-green-600 w-7 h-7" />
-            </div>
-            <h3 className="text-2xl font-bold mb-4">Legal-First Web3</h3>
-            <p className="text-gray-600">Regulatory intelligence meets DeFi architecture. Building compliant, lasting systems.</p>
-          </div>
-        </div>
-
-        <div className="mt-20 bg-black text-white rounded-3xl p-10 md:p-16 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-pink-500 to-purple-600 rounded-full filter blur-3xl opacity-30 translate-x-1/2 -translate-y-1/2"></div>
-          
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div className="flex-1">
-              <h3 className="text-3xl font-bold mb-4">Explorers & Operators</h3>
-              <p className="text-gray-300 text-lg">
-                We need both. <span className="text-white font-bold">Explorers</span> open new frontiers with curiosity and insight. 
-                <span className="text-white font-bold"> Operators</span> build lasting systems with precision and risk control.
-              </p>
-            </div>
-            <div className="flex items-center space-x-4 text-2xl font-bold opacity-80">
-              <span>Dreamers</span>
-              <span className="text-pink-500">×</span>
-              <span>Builders</span>
-              <span className="text-blue-500">×</span>
-              <span>Executors</span>
+          {/* Card 3: Legal-First Web3 - Overlays Influence Engine */}
+          <div className="md:col-span-5 md:col-start-3 md:-mt-20 group interactive-hover z-30">
+            <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border-l-8 border-emerald-500 border-t border-r border-b border-t-white/40 border-r-white/40 border-b-white/40 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-1">
+              <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform duration-500">
+                <ShieldCheck size={32} />
+              </div>
+              <h3 className="text-2xl font-display font-bold mb-4 text-gray-900">Legal-First Web3</h3>
+              <p className="text-gray-700 leading-relaxed">Regulatory intelligence meets DeFi architecture. Building compliant, lasting systems.</p>
             </div>
           </div>
         </div>
@@ -733,12 +835,19 @@ const IdentitySection = () => {
 
 const PhilosophySection = () => {
   return (
-    <section id="philosophy" className="py-24 bg-white relative">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-           <span className="text-pink-600 font-bold tracking-wider uppercase mb-2 block">Our DNA</span>
-           <h2 className="text-4xl md:text-6xl font-bold text-gray-900">Core Philosophy</h2>
-           <p className="text-gray-500 text-lg mt-4">Hover to spawn the node. Strike it with your cursor.</p>
+    <section id="philosophy" className="py-24 bg-white relative overflow-hidden">
+      {/* Subtle Background Effects */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-pink-100/30 rounded-full blur-[150px]"></div>
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[120px]"></div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-16">
+           <span className="text-pink-600 font-bold tracking-widest uppercase mb-4 block text-sm">Our DNA</span>
+           <h2 className="text-5xl md:text-7xl font-display font-black mb-6">
+             <span className="text-gray-900">Core </span>
+             <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 animate-gradient">Philosophy</span>
+           </h2>
+           <p className="text-gray-600 text-lg max-w-2xl mx-auto">Hover to spawn the node. Strike it with your cursor.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -763,7 +872,7 @@ const ValleyCastSection = () => {
               <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
               <span className="text-red-500 font-mono text-sm tracking-widest uppercase">Live on Air</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-bold mb-8 leading-none tracking-tight">
+            <h2 className="text-5xl md:text-7xl font-bold mb-8 leading-none tracking-tight text-white">
               Valley<span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Cast</span>
             </h2>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
@@ -793,10 +902,10 @@ const ValleyCastSection = () => {
           </div>
                <div className="p-6">
                  <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-xl font-bold">Latest Episode: The Cognition Network</h3>
-                    <span className="text-gray-400 text-sm">42:15</span>
+                    <h3 className="text-xl font-bold text-white">Latest Episode: The Cognition Network</h3>
+                    <span className="text-gray-300 text-sm">42:15</span>
                  </div>
-                 <p className="text-gray-400 text-sm">Exploring how AI agents and human operators merge to form new intelligence nodes.</p>
+                 <p className="text-gray-300 text-sm">Exploring how AI agents and human operators merge to form new intelligence nodes.</p>
                </div>
             </div>
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-gray-800 rounded-full -z-0"></div>
@@ -810,27 +919,44 @@ const ValleyCastSection = () => {
 
 const TeamSection = () => {
   return (
-    <section id="team" className="py-24 bg-gray-50">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">Leadership & Architects</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+    <section id="team" className="py-32 bg-bv-background relative overflow-hidden">
+      {/* Background Decor - Fluid Gradients */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-bv-cta/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-7xl font-display font-black mb-6 text-bv-primary tracking-tight">
+            THE ARCHITECTS
+          </h2>
+          <p className="text-bv-secondary text-xl max-w-2xl mx-auto font-light">
             A distributed network of explorers and operators.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamData.map((member, index) => (
-            <div key={index} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group interactive-hover">
-              <div className={`h-2 w-full bg-gradient-to-r ${member.color}`}></div>
-              <div className="p-6">
-                <div className="mb-4">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${member.color} flex items-center justify-center text-white font-bold text-xl`}>
-                    {member.name.charAt(0)}
+            <div
+              key={index}
+              className="bg-white/40 backdrop-blur-xl rounded-[2.5rem] overflow-hidden shadow-xl shadow-bv-primary/5 hover:shadow-2xl hover:bg-white/60 transition-all duration-300 group border border-white/50 interactive-hover"
+            >
+              <div className={`h-2 w-full bg-gradient-to-r ${member.color} opacity-80`}></div>
+              <div className="p-8 flex flex-col items-center text-center">
+                <div className="mb-6 relative">
+                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${member.color} p-[2px] shadow-lg group-hover:scale-110 transition-transform duration-500`}>
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                      <span className={`text-3xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br ${member.color}`}>
+                        {member.name.charAt(0)}
+                      </span>
+                    </div>
                   </div>
+                  <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${member.color} blur-xl opacity-20 group-hover:opacity-60 transition-opacity duration-500 -z-10`}></div>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{member.name}</h3>
-                <p className="text-sm text-gray-500 uppercase tracking-wide font-medium">{member.role}</p>
+
+                <h3 className="text-2xl font-display font-bold text-bv-primary mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-bv-cta group-hover:to-purple-500 transition-all duration-300">
+                  {member.name}
+                </h3>
+                <p className="text-xs text-bv-secondary uppercase tracking-widest font-bold opacity-70">{member.role}</p>
               </div>
             </div>
           ))}
@@ -842,59 +968,85 @@ const TeamSection = () => {
 
 const Footer = () => {
   return (
-    <footer id="contact" className="bg-white pt-24 pb-12 border-t border-gray-100">
+    <footer id="contact" className="bg-white/80 backdrop-blur-lg pt-24 pb-12 border-t border-white/20 relative z-10">
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-               <img src="/BlockValley_Logo_Dark.png" alt="Logo" className="h-12 w-auto mb-6" />
-            <p className="text-xl text-gray-800 font-bold mb-6 max-w-md">
+            <img src="/BlockValley_Logo_Dark.png" alt="Logo" className="h-10 w-auto mb-8 opacity-90" />
+            <p className="text-xl text-bv-secondary font-medium mb-8 max-w-md leading-relaxed">
               Combining capital, technology, narrative, and humanity to build the frontier.
             </p>
             <div className="flex space-x-4">
-               <button className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors interactive-hover">
-                 <Twitter size={18} />
-               </button>
-               <button className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition-colors interactive-hover">
-                 <Linkedin size={18} />
-               </button>
-               <button className="w-10 h-10 rounded-full bg-pink-500 text-white flex items-center justify-center hover:bg-pink-600 transition-colors interactive-hover">
-                 <Mail size={18} />
-               </button>
+              <a href="https://x.com/TheBlockValley" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-gray-200 cursor-pointer">
+                <Twitter size={20} />
+              </a>
+              <a href="mailto:hello@blockvalley.io" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-bv-cta text-white flex items-center justify-center hover:bg-bv-cta/90 transition-colors shadow-lg shadow-gray-200 cursor-pointer">
+                <Mail size={20} />
+              </a>
             </div>
           </div>
 
           <div>
-            <h4 className="font-bold text-gray-900 mb-6">Global Hubs</h4>
-            <ul className="space-y-4 text-gray-600">
-              <li className="flex items-start">
-                <span className="w-2 h-2 mt-2 bg-blue-500 rounded-full mr-3"></span>
-                <span>North America <br/><span className="text-sm text-gray-400">Led by Kenji</span></span>
+            <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Global Hubs</h4>
+            <ul className="space-y-6 text-bv-secondary">
+              <li className="flex items-start group">
+                <span className="w-2 h-2 mt-2 bg-bv-cta rounded-full mr-3 group-hover:scale-150 transition-transform duration-300"></span>
+                <div>
+                  <span className="font-medium block mb-1">North America</span>
+                  <span className="text-sm text-gray-400 font-normal">Led by Kenji</span>
+                </div>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 mt-2 bg-pink-500 rounded-full mr-3"></span>
-                <span>Asia & Middle East <br/><span className="text-sm text-gray-400">Led by Zoe</span></span>
+              <li className="flex items-start group">
+                <span className="w-2 h-2 mt-2 bg-purple-500 rounded-full mr-3 group-hover:scale-150 transition-transform duration-300"></span>
+                <div>
+                  <span className="font-medium block mb-1">Asia & Middle East</span>
+                  <span className="text-sm text-gray-400 font-normal">Led by Zoe</span>
+                </div>
               </li>
-              <li className="flex items-start">
-                <span className="w-2 h-2 mt-2 bg-green-500 rounded-full mr-3"></span>
-                <span>Europe <br/><span className="text-sm text-gray-400">Led by Pete</span></span>
+              <li className="flex items-start group">
+                <span className="w-2 h-2 mt-2 bg-emerald-500 rounded-full mr-3 group-hover:scale-150 transition-transform duration-300"></span>
+                <div>
+                  <span className="font-medium block mb-1">Europe</span>
+                  <span className="text-sm text-gray-400 font-normal">Led by Pete</span>
+                </div>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-bold text-gray-900 mb-6">Quick Links</h4>
-            <ul className="space-y-3 text-gray-600">
-              <li><a href="#" className="hover:text-pink-600 transition-colors interactive-hover">Work With Us</a></li>
-              <li><a href="#" className="hover:text-pink-600 transition-colors interactive-hover">ValleyCast Episodes</a></li>
-              <li><a href="#" className="hover:text-pink-600 transition-colors interactive-hover">RWA Research</a></li>
-              <li><a href="#" className="hover:text-pink-600 transition-colors interactive-hover">Privacy Policy</a></li>
+            <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Quick Links</h4>
+            <ul className="space-y-4 text-bv-secondary font-medium">
+              <li>
+                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                  <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
+                  Work With Us
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                  <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
+                  ValleyCast Episodes
+                </a>
+              </li>
+              <li>
+                <a href="https://mp.weixin.qq.com/s/1TFJitCvjV6i99JKm5kHwA" target="_blank" rel="noopener noreferrer" className="hover:text-bv-cta transition-colors flex items-center group">
+                  <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
+                  RWA Research
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                  <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </div>
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100">
           <p className="text-gray-400 text-sm">© 2025 Block Valley Labs. All rights reserved.</p>
-          <p className="text-gray-400 text-sm mt-2 md:mt-0">Designed for the Future.</p>
+          <p className="text-gray-400 text-sm mt-2 md:mt-0 font-mono tracking-wider opacity-60">DESIGNED FOR THE FUTURE</p>
         </div>
       </div>
     </footer>
@@ -914,7 +1066,7 @@ const App = () => {
   };
 
   return (
-    <div className="font-sans antialiased text-gray-900 bg-white selection:bg-pink-100 selection:text-pink-900">
+    <div className="font-sans antialiased text-bv-text bg-bv-background selection:bg-bv-cta/30 selection:text-bv-primary relative">
       {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
       <CustomCursor />
       <style>{`
@@ -934,7 +1086,7 @@ const App = () => {
         }
       `}</style>
       <Header />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <IdentitySection />
         <PhilosophySection />
