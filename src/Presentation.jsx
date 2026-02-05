@@ -1,22 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Trophy, 
-  Zap, 
-  ShieldCheck, 
-  Play, 
-  Hammer, 
-  TrendingUp, 
-  Users, 
-  Target, 
-  Star, 
-  ChevronRight, 
+import {
+  Trophy,
+  ShieldCheck,
+  Play,
+  Hammer,
+  Star,
+  ChevronRight,
   ChevronLeft,
-  Layout,
   Cpu,
   Globe,
-  Heart,
-  Eye,
   Rocket,
   Home
 } from 'lucide-react';
@@ -141,25 +134,25 @@ const Presentation = () => {
       content: (
         <div className="flex flex-col md:flex-row gap-4 items-stretch h-full">
           {[
-            { 
-              step: "01. PLAY", 
-              layer: "Entertainment", 
-              color: "border-[#00FF85]", 
-              icon: <Trophy />, 
+            {
+              step: "01. PLAY",
+              layer: "Entertainment",
+              color: "border-[#00FF85]",
+              icon: <Trophy />,
               desc: "Earn attention and emotional buy-in through live formats."
             },
-            { 
-              step: "02. BUILD", 
-              layer: "Transition", 
-              color: "border-[#00D1FF]", 
-              icon: <Hammer />, 
+            {
+              step: "02. BUILD",
+              layer: "Transition",
+              color: "border-[#00D1FF]",
+              icon: <Hammer />,
               desc: "Convert curiosity into strategy and digital identity."
             },
-            { 
-              step: "03. GROW", 
-              layer: "Infrastructure", 
-              color: "border-[#FF007A]", 
-              icon: <Rocket />, 
+            {
+              step: "03. GROW",
+              layer: "Infrastructure",
+              color: "border-[#FF007A]",
+              icon: <Rocket />,
               desc: "Fully build and scale Web3 presence with long-term alignment."
             }
           ].map((item, i) => (
@@ -302,7 +295,7 @@ const Presentation = () => {
     setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
-  
+
   const prevSlide = () => {
     setDirection(-1);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -340,9 +333,9 @@ const Presentation = () => {
       {/* Header */}
       <nav className="relative z-10 p-4 md:p-6 flex justify-between items-center flex-shrink-0">
         <div className="flex items-center gap-2 md:gap-3">
-          <img 
-            src="/LABS_2.png" 
-            alt="Block Valley Labs" 
+          <img
+            src="/LABS_2.png"
+            alt="Block Valley Labs"
             className="h-8 md:h-12 object-contain"
           />
         </div>
@@ -352,7 +345,7 @@ const Presentation = () => {
             <span>Infrastructure</span>
             <span>Integrity</span>
           </div>
-          <Link 
+          <Link
             to="/"
             className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-sm md:text-base"
           >
@@ -395,9 +388,9 @@ const Presentation = () => {
                 <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
                   <div className="space-y-2 md:space-y-4 flex flex-col items-center">
                     {current.title === "Block Valley {LABS}" ? (
-                      <img 
-                        src="/LABS_2.png" 
-                        alt="Block Valley Labs" 
+                      <img
+                        src="/LABS_2.png"
+                        alt="Block Valley Labs"
                         className="w-full max-w-2xl md:max-w-4xl h-auto object-contain"
                       />
                     ) : (
@@ -439,13 +432,13 @@ const Presentation = () => {
       {/* Footer Navigation */}
       <footer className="relative z-10 p-4 md:p-6 flex justify-between items-center flex-shrink-0">
         <div className="flex gap-3 md:gap-4">
-          <button 
+          <button
             onClick={prevSlide}
             className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
-          <button 
+          <button
             onClick={nextSlide}
             className="group h-12 md:h-14 px-6 md:px-10 rounded-full bg-white text-black font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform text-xs md:text-sm"
           >
@@ -459,8 +452,8 @@ const Presentation = () => {
 
       {/* Interactive Element: Funnel indicator (bottom) */}
       <div className="fixed bottom-0 left-0 w-full h-1 flex bg-white/5 z-20">
-        <div 
-          className="h-full bg-white transition-all duration-500 ease-out" 
+        <div
+          className="h-full bg-white transition-all duration-500 ease-out"
           style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
         />
       </div>

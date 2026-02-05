@@ -1,47 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
-import App from './App.jsx'
-import Presentation from './Presentation.jsx'
+import { BrowserRouter } from 'react-router-dom'
+import AnimatedRoutes from './AnimatedRoutes.jsx'
 import './index.css'
-
-const AnimatedRoutes = () => {
-  const location = useLocation();
-  
-  return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route 
-          path="/" 
-          element={
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <App />
-            </motion.div>
-          } 
-        />
-        <Route 
-          path="/deck" 
-          element={
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <Presentation />
-            </motion.div>
-          } 
-        />
-      </Routes>
-    </AnimatePresence>
-  );
-};
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -50,3 +11,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </React.StrictMode>,
 )
+
+
