@@ -333,7 +333,7 @@ const Presentation = () => {
   };
 
   return (
-    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col font-sans overflow-hidden">
+    <div className="h-screen bg-[#0A0A0A] text-white flex flex-col font-sans overflow-hidden [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_h5]:text-white [&_h6]:text-white">
       {/* Background Gradient Effect */}
       <div className={`fixed inset-0 bg-gradient-to-br ${current.bg} opacity-20 blur-[100px] transition-all duration-1000`} />
 
