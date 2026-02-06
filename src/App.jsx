@@ -1027,13 +1027,13 @@ const Footer = () => {
             <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Quick Links</h4>
             <ul className="space-y-4 text-bv-secondary font-medium">
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <a href="mailto:admin@blockvalley.io" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   Work With Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <a href="https://x.com/theblockvalley" target="_blank" rel="noopener noreferrer" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   ValleyCast Episodes
                 </a>
@@ -1045,7 +1045,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <Link to="/privacy" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   Privacy Policy
                 </a>
