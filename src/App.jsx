@@ -40,40 +40,40 @@ const IntroAnimation = ({ onComplete }) => {
   return (
     <div
       className={`fixed inset-0 z-[10000] flex items-center justify-center bg-white cursor-pointer overflow-hidden transition-all duration-[1200ms] ease-[cubic-bezier(0.7, 0, 0.3, 1)]
-        ${isExiting ? 'opacity-0 scale-[5] pointer-events-none' : 'opacity-100 scale-100'}
+        ${isExiting ? 'opacity-0 scale-[5] pointer-events-none' :'opacity-100 scale-100'}
 `}
       onClick={handleClick}
     >
       {/* Background Subtle Grid */}
       <div className="absolute inset-0 opacity-[0.03]"
-        style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+        style={{ backgroundImage:'radial-gradient(#000 1px, transparent 1px)', backgroundSize:'30px 30px' }}>
       </div>
 
       <div className="relative w-full h-full flex items-center justify-center">
 
         {/* ROTATING LOGO STRUCTURE */}
         <div
-          className={`relative w-[60vmin] h-[60vmin] transition-all duration-700 ease-out ${isHovering ? 'scale-110' : 'scale-100'} `}
+          className={`relative w-[60vmin] h-[60vmin] transition-all duration-700 ease-out ${isHovering ? 'scale-110' :'scale-100'} `}
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <div className={`absolute inset-0 w-full h-full animate-spin-slow ${isExiting ? 'animate-spin-fast' : ''} `}>
+          <div className={`absolute inset-0 w-full h-full animate-spin-slow ${isExiting ? 'animate-spin-fast' :''} `}>
 
             {/* Pink Lobe */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
-              style={{ transform: `rotate(0deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+              style={{ transform:`rotate(0deg) translateY(${isHovering ? '-10%' :'0'})` }}>
               <div className="w-full h-full rounded-full bg-gradient-to-b from-pink-500 to-pink-300 mix-blend-multiply opacity-80 blur-xl"></div>
             </div>
 
             {/* Blue Lobe */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
-              style={{ transform: `rotate(120deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+              style={{ transform:`rotate(120deg) translateY(${isHovering ? '-10%' :'0'})` }}>
               <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-blue-300 mix-blend-multiply opacity-80 blur-xl"></div>
             </div>
 
             {/* Green Lobe */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
-              style={{ transform: `rotate(240deg) translateY(${isHovering ? '-10%' : '0'})` }}>
+              style={{ transform:`rotate(240deg) translateY(${isHovering ? '-10%' :'0'})` }}>
               <div className="w-full h-full rounded-full bg-gradient-to-b from-green-500 to-green-300 mix-blend-multiply opacity-80 blur-xl"></div>
             </div>
 
@@ -88,10 +88,10 @@ const IntroAnimation = ({ onComplete }) => {
           {phrases.map((phrase, idx) => (
             <h2
               key={idx}
-              className={`absolute top-1 / 2 left-1 / 2-translate-x-1 / 2-translate-y-1 / 2 text-3xl md: text-5xl font-bold tracking-tighter uppercase transition-all duration-1000 transform whitespace-nowrap
-                ${idx === textIndex ? 'opacity-20 blur-0 scale-100' : 'opacity-0 blur-md scale-90'}
+              className={`absolute top-1/2 left-1/2-translate-x-1/2-translate-y-1/2 text-3xl md:text-5xl font-bold tracking-tighter uppercase transition-all duration-1000 transform whitespace-nowrap
+                ${idx === textIndex ? 'opacity-20 blur-0 scale-100' :'opacity-0 blur-md scale-90'}
 `}
-              style={{ color: '#111' }}
+              style={{ color:'#111' }}
             >
               {phrase}
             </h2>
@@ -115,14 +115,14 @@ const IntroAnimation = ({ onComplete }) => {
 
       <style>{`
 @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from { transform:rotate(0deg); }
+          to { transform:rotate(360deg); }
 }
         .animate-spin-slow {
-  animation: spin-slow 10s linear infinite;
+  animation:spin-slow 10s linear infinite;
 }
         .animate-spin-fast {
-  animation: spin-slow 1.5s cubic-bezier(0.5, 0, 1, 1) infinite;
+  animation:spin-slow 1.5s cubic-bezier(0.5, 0, 1, 1) infinite;
 }
 `}</style>
     </div>
@@ -171,29 +171,29 @@ const CustomCursor = () => {
   return (
     <>
       <style>{`
-  /* DEFAULT: Hide Cursor logic completely to prevent touch interference */
+  /* DEFAULT:Hide Cursor logic completely to prevent touch interference */
   .custom-cursor-container {
-  display: none;
+  display:none;
 }
 
 /* ONLY enable on devices that support hover AND have a fine pointer (Mouse/Trackpad) */
-@media(hover: hover) and(pointer: fine) {
+@media(hover:hover) and(pointer:fine) {
           /* Hide the system cursor */
-          body { cursor: none; }
-  a, button, [role = "button"] { cursor: none; }
+          body { cursor:none; }
+  a, button, [role = "button"] { cursor:none; }
 
           /* Show the custom cursor container */
           .custom-cursor-container {
-    display: flex;
+    display:flex;
   }
 }
 
 @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from { transform:rotate(0deg); }
+          to { transform:rotate(360deg); }
 }
         .animate-spin-slow {
-  animation: spin-slow 4s linear infinite;
+  animation:spin-slow 4s linear infinite;
 }
 `}</style>
 
@@ -201,24 +201,24 @@ const CustomCursor = () => {
       <div
         ref={cursorRef}
         className="custom-cursor-container fixed top-0 left-0 pointer-events-none z-[9999] items-center justify-center will-change-transform"
-        style={{ transform: 'translate(-50%, -50%)' }} // Initial centering
+        style={{ transform:'translate(-50%, -50%)' }} // Initial centering
       >
         {/* The Gradient Ring */}
         <div
           className={`relative flex items-center justify-center rounded-full transition-all duration-200 ease-out
-            ${isHovering ? 'w-16 h-16' : 'w-10 h-10'}
-            ${isClicking ? 'scale-90' : 'scale-100'}
+            ${isHovering ? 'w-16 h-16' :'w-10 h-10'}
+            ${isClicking ? 'scale-90' :'scale-100'}
 `}
         >
           {/* Animated Gradient Border-Sharp, No Blur */}
           <div className="absolute inset-0 rounded-full p-[2px] animate-spin-slow"
             style={{
-              background: 'conic-gradient(from 0deg, #EC4899, #3B82F6, #10B981, #EC4899)',
-              mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              maskComposite: 'exclude',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              borderRadius: '50%'
+              background:'conic-gradient(from 0deg, #EC4899, #3B82F6, #10B981, #EC4899)',
+              mask:'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              maskComposite:'exclude',
+              WebkitMask:'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite:'xor',
+              borderRadius:'50%'
             }}
           />
         </div>
@@ -226,7 +226,7 @@ const CustomCursor = () => {
         {/* The Center Dot-Stays sharp and centered */}
         <div
           className={`absolute w-2 h-2 bg-pink-500 rounded-full transition-all duration-200 
-            ${isHovering ? 'bg-blue-500 scale-125' : ''}
+            ${isHovering ? 'bg-blue-500 scale-125' :''}
 `}
         />
       </div>
@@ -276,31 +276,31 @@ const InteractiveCard = ({ item }) => {
   const ballRef = useRef(null);
   const requestRef = useRef(null);
   const isHovered = useRef(false);
-  const mousePos = useRef({ x: -1000, y: -1000 });
-  const prevMousePos = useRef({ x: -1000, y: -1000 });
+  const mousePos = useRef({ x:-1000, y:-1000 });
+  const prevMousePos = useRef({ x:-1000, y:-1000 });
 
   // Physics State
   const physics = useRef({
-    pos: { x: 0, y: 0 },
-    vel: { x: 0, y: 0 },
-    angle: 0,
-    radius: 35,        // Half of 70px ball size
-    friction: 0.99,    // Light friction for fluid drift
-    restitution: 0.9   // Bounciness
+    pos:{ x:0, y:0 },
+    vel:{ x:0, y:0 },
+    angle:0,
+    radius:35,        // Half of 70px ball size
+    friction:0.99,    // Light friction for fluid drift
+    restitution:0.9   // Bounciness
   });
 
   const handleMouseEnter = () => {
     isHovered.current = true;
     if (cardRef.current) {
       const rect = cardRef.current.getBoundingClientRect();
-      physics.current.pos = { x: rect.width / 2, y: rect.height / 2 };
+      physics.current.pos = { x:rect.width/2, y:rect.height/2 };
 
-      // Spawn Logic: Slow Float
+      // Spawn Logic:Slow Float
       const speed = 1.5;
       const angle = getRandomAngle();
       physics.current.vel = {
-        x: Math.cos(angle) * speed,
-        y: Math.sin(angle) * speed
+        x:Math.cos(angle) * speed,
+        y:Math.sin(angle) * speed
       };
     }
     if (!requestRef.current) {
@@ -310,7 +310,7 @@ const InteractiveCard = ({ item }) => {
 
   const handleMouseLeave = () => {
     isHovered.current = false;
-    mousePos.current = { x: -1000, y: -1000 };
+    mousePos.current = { x:-1000, y:-1000 };
   };
 
   const handleMouseMove = (e) => {
@@ -318,8 +318,8 @@ const InteractiveCard = ({ item }) => {
       const rect = cardRef.current.getBoundingClientRect();
       prevMousePos.current = { ...mousePos.current };
       mousePos.current = {
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        x:e.clientX - rect.left,
+        y:e.clientY - rect.top
       };
     }
   };
@@ -369,8 +369,8 @@ const InteractiveCard = ({ item }) => {
     const hitRadius = p.radius + 15;
 
     if (dist < hitRadius) {
-      let nx = dx / dist;
-      let ny = dy / dist;
+      let nx = dx/dist;
+      let ny = dy/dist;
       if (dist === 0) { nx = 1; ny = 0; }
 
       // Strong Impulse Force
@@ -392,14 +392,14 @@ const InteractiveCard = ({ item }) => {
     const minSpeed = 1.0;
     const currentSpeed = Math.sqrt(p.vel.x * p.vel.x + p.vel.y * p.vel.y);
     if (currentSpeed < minSpeed && currentSpeed > 0.01) {
-      const scale = minSpeed / currentSpeed;
+      const scale = minSpeed/currentSpeed;
       p.vel.x *= scale;
       p.vel.y *= scale;
     }
 
     const maxSpeed = 25;
     if (currentSpeed > maxSpeed) {
-      const scale = maxSpeed / currentSpeed;
+      const scale = maxSpeed/currentSpeed;
       p.vel.x *= scale;
       p.vel.y *= scale;
     }
@@ -421,7 +421,7 @@ const InteractiveCard = ({ item }) => {
   return (
     <div
       ref={cardRef}
-      className={`${item.color} ${item.size} relative rounded-3xl p-8 text-white overflow-hidden group hover: shadow-2xl transition-all duration-300 hover: -translate-y-1 min-h-[260px] flex flex-col justify-between interactive-hover`}
+      className={`${item.color} ${item.size} relative rounded-3xl p-8 text-white overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 min-h-[260px] flex flex-col justify-between interactive-hover`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
@@ -459,64 +459,64 @@ const InteractiveCard = ({ item }) => {
 
 const philosophyBlocks = [
   {
-    title: "Self-Heating Individuals",
-    icon: <Zap className="w-8 h-8 text-white" />,
-    desc: "We generate momentum internally—curiosity, execution energy, and insight—without external forcing.",
-    color: "bg-gradient-to-br from-pink-500 to-rose-600",
-    accentColor: "#db2777", // Darker pink for seams
-    size: "col-span-1 md:col-span-2"
+    title:"Self-Heating Individuals",
+    icon:<Zap className="w-8 h-8 text-white" />,
+    desc:"We generate momentum internally—curiosity, execution energy, and insight—without external forcing.",
+    color:"bg-gradient-to-br from-pink-500 to-rose-600",
+    accentColor:"#db2777", // Darker pink for seams
+    size:"col-span-1 md:col-span-2"
   },
   {
-    title: "Cognition Network",
-    icon: <Cpu className="w-8 h-8 text-white" />,
-    desc: "Collective intelligence formed when experts, operators, creators, and AI agents collaborate.",
-    color: "bg-gradient-to-br from-blue-500 to-indigo-600",
-    accentColor: "#2563eb", // Blue for seams
-    size: "col-span-1"
+    title:"Cognition Network",
+    icon:<Cpu className="w-8 h-8 text-white" />,
+    desc:"Collective intelligence formed when experts, operators, creators, and AI agents collaborate.",
+    color:"bg-gradient-to-br from-blue-500 to-indigo-600",
+    accentColor:"#2563eb", // Blue for seams
+    size:"col-span-1"
   },
   {
-    title: "Tech x Humanity",
-    icon: <Users className="w-8 h-8 text-white" />,
-    desc: "Technology accelerates, not replaces, human spirit, meaning, creativity, and connection.",
-    color: "bg-gradient-to-br from-green-500 to-emerald-600",
-    accentColor: "#059669", // Green for seams
-    size: "col-span-1"
+    title:"Tech x Humanity",
+    icon:<Users className="w-8 h-8 text-white" />,
+    desc:"Technology accelerates, not replaces, human spirit, meaning, creativity, and connection.",
+    color:"bg-gradient-to-br from-green-500 to-emerald-600",
+    accentColor:"#059669", // Green for seams
+    size:"col-span-1"
   },
   {
-    title: "Bridge Identity",
-    icon: <Globe className="w-8 h-8 text-white" />,
-    desc: "Connecting East & West, Traditional & Emerging, Capital & Tech, Business & Culture.",
-    color: "bg-gradient-to-br from-purple-500 to-violet-600",
-    accentColor: "#7c3aed", // Purple for seams
-    size: "col-span-1 md:col-span-2"
+    title:"Bridge Identity",
+    icon:<Globe className="w-8 h-8 text-white" />,
+    desc:"Connecting East & West, Traditional & Emerging, Capital & Tech, Business & Culture.",
+    color:"bg-gradient-to-br from-purple-500 to-violet-600",
+    accentColor:"#7c3aed", // Purple for seams
+    size:"col-span-1 md:col-span-2"
   },
   {
-    title: "Network, Not Stack",
-    icon: <Layers className="w-8 h-8 text-white" />,
-    desc: "Instead of silos, we operate as a distributed network with multiple intelligence nodes.",
-    color: "bg-gradient-to-br from-orange-400 to-red-500",
-    accentColor: "#ea580c", // Orange for seams
-    size: "col-span-1"
+    title:"Network, Not Stack",
+    icon:<Layers className="w-8 h-8 text-white" />,
+    desc:"Instead of silos, we operate as a distributed network with multiple intelligence nodes.",
+    color:"bg-gradient-to-br from-orange-400 to-red-500",
+    accentColor:"#ea580c", // Orange for seams
+    size:"col-span-1"
   },
   {
-    title: "Infinite Patience",
-    icon: <Play className="w-8 h-8 text-white" />,
-    desc: "AI agents create an environment where knowledge, iteration, and support are always available.",
-    color: "bg-gradient-to-br from-cyan-500 to-blue-500",
-    accentColor: "#0891b2", // Cyan for seams
-    size: "col-span-1 md:col-span-2"
+    title:"Infinite Patience",
+    icon:<Play className="w-8 h-8 text-white" />,
+    desc:"AI agents create an environment where knowledge, iteration, and support are always available.",
+    color:"bg-gradient-to-br from-cyan-500 to-blue-500",
+    accentColor:"#0891b2", // Cyan for seams
+    size:"col-span-1 md:col-span-2"
   }
 ];
 
 const teamData = [
-  { name: "Ms. Valley (Zoe)", role: "Founder & Vision CEO", color: "from-pink-500 to-purple-500" },
-  { name: "Aaron", role: "Co-Founder & Architect", color: "from-blue-500 to-cyan-500" },
-  { name: "Kenji", role: "COO & North America Lead", color: "from-green-500 to-emerald-500" },
-  { name: "Pete", role: "CGO & Europe Lead", color: "from-orange-500 to-red-500" },
-  { name: "Donald", role: "CTO / DeFi Architect", color: "from-indigo-500 to-blue-600" },
-  { name: "Lu Di", role: "Chief Legal Officer", color: "from-gray-600 to-gray-800" },
-  { name: "Van", role: "Chief Art Officer", color: "from-pink-400 to-rose-400" },
-  { name: "Patrick", role: "Product Ops", color: "from-teal-400 to-teal-600" },
+  { name:"Ms. Valley (Zoe)", role:"Founder & Vision CEO", color:"from-pink-500 to-purple-500" },
+  { name:"Aaron", role:"Co-Founder & Architect", color:"from-blue-500 to-cyan-500" },
+  { name:"Kenji", role:"COO & North America Lead", color:"from-green-500 to-emerald-500" },
+  { name:"Pete", role:"CGO & Europe Lead", color:"from-orange-500 to-red-500" },
+  { name:"Donald", role:"CTO/DeFi Architect", color:"from-indigo-500 to-blue-600" },
+  { name:"Lu Di", role:"Chief Legal Officer", color:"from-gray-600 to-gray-800" },
+  { name:"Van", role:"Chief Art Officer", color:"from-pink-400 to-rose-400" },
+  { name:"Patrick", role:"Product Ops", color:"from-teal-400 to-teal-600" },
 ];
 
 // --- 4. SITE SECTIONS ---
@@ -532,18 +532,18 @@ const Header = () => {
   }, []);
 
   const menuItems = [
-    { label: 'Identity', type: 'scroll', target: 'identity' },
-    { label: 'Philosophy', type: 'scroll', target: 'philosophy' },
-    { label: 'ValleyCast', type: 'scroll', target: 'valleycast' },
-    { label: 'Team', type: 'scroll', target: 'team' },
-    { label: 'Contact', type: 'scroll', target: 'contact' },
-    { label: 'Media Kit', type: 'link', target: 'https://drive.google.com/drive/folders/1LNhbwyq77HmVXTBqKbsHWmbUypfHKRDs?usp=sharing' },
-    { label: 'Deck', type: 'route', target: '/deck' }
+    { label:'Identity', type:'scroll', target:'identity' },
+    { label:'Philosophy', type:'scroll', target:'philosophy' },
+    { label:'ValleyCast', type:'scroll', target:'valleycast' },
+    { label:'Team', type:'scroll', target:'team' },
+    { label:'Contact', type:'scroll', target:'contact' },
+    { label:'Media Kit', type:'link', target:'https://drive.google.com/drive/folders/1LNhbwyq77HmVXTBqKbsHWmbUypfHKRDs?usp=sharing' },
+    { label:'Deck', type:'route', target:'/deck' }
   ];
 
   const scrollTo = (id) => {
     setIsOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior:'smooth' });
   };
 
   return (
@@ -552,21 +552,21 @@ const Header = () => {
         <nav
           className={`pointer-events-auto transition-all duration-500 ease-out ${scrolled || isOpen
             ? 'w-[90%] md:w-[760px] bg-white/90 backdrop-blur-2xl border border-white/60 shadow-xl shadow-bv-primary/10'
-            : 'w-full max-w-7xl bg-transparent'
-            } rounded-full px-3 py-2.5 flex items-center justify-between mx-auto ${scrolled ? 'gap-3' : 'gap-4'
+            :'w-full max-w-7xl bg-transparent'
+            } rounded-full px-3 py-2.5 flex items-center justify-between mx-auto ${scrolled ? 'gap-3' :'gap-4'
             } `}
         >
           {/* Logo-Switch between Full and Icon based on scroll */}
           <div
-            className={`cursor-pointer relative flex items-center justify-center transition-all duration-300 ${scrolled ? 'h-10 w-10 min-w-[40px]' : 'h-14 min-w-[180px]'
+            className={`cursor-pointer relative flex items-center justify-center transition-all duration-300 ${scrolled ? 'h-10 w-10 min-w-[40px]' :'h-14 min-w-[180px]'
               } `}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onClick={() => window.scrollTo({ top:0, behavior:'smooth' })}
           >
             {/* Full Logo (Visible when NOT scrolled) */}
             <img
               src="/BlockValley_Logo_Dark.png"
               alt="Block Valley"
-              className={`h-14 w-auto object-contain transition-all duration-300 absolute left-1 / 2-translate-x-1 / 2 ${scrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+              className={`h-14 w-auto object-contain transition-all duration-300 absolute left-1/2-translate-x-1/2 ${scrolled ? 'opacity-0 scale-75 pointer-events-none' :'opacity-100 scale-100'
                 } `}
             />
 
@@ -574,43 +574,43 @@ const Header = () => {
             <img
               src="/BlockValleyLogoCut.png"
               alt="BV Icon"
-              className={`h-10 w-10 object-contain transition-all duration-300 absolute left-1 / 2-translate-x-1 / 2 ${scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'
+              className={`h-10 w-10 object-contain transition-all duration-300 absolute left-1/2-translate-x-1/2 ${scrolled ? 'opacity-100 scale-100' :'opacity-0 scale-50 pointer-events-none'
                 } `}
             />
           </div>
 
           {/* Desktop Nav Pills */}
-          <div className={`hidden md:flex items-center rounded-full transition-all duration-300 ${scrolled ? 'bg-transparent p-0 gap-0.5' : 'bg-bv-secondary/5 p-1.5 gap-1 backdrop-blur-sm border border-white/20'
+          <div className={`hidden md:flex items-center rounded-full transition-all duration-300 ${scrolled ? 'bg-transparent p-0 gap-0.5' :'bg-bv-secondary/5 p-1.5 gap-1 backdrop-blur-sm border border-white/20'
             } `}>
             {menuItems.map((item) =>
               item.type === 'scroll' ? (
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.target)}
-                  className={`rounded-full text-sm font-medium text-bv-secondary hover: text-bv-primary transition-all duration-300 relative group overflow-hidden ${scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden ${scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' :'px-5 py-2 hover:bg-white/80'
                     } `}
                 >
                   <span className="relative z-10">{item.label}</span>
                   {!scrolled && <span className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full shadow-sm"></span>}
                 </button>
-              ) : item.type === 'route' ? (
+              ) :item.type === 'route' ? (
                 <Link
                   key={item.label}
                   to={item.target}
                   className={`rounded-full text-sm font-semibold transition-all duration-300 relative group overflow-hidden flex items-center ${scrolled
                     ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105'
-                    : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105 ml-2'
+                    :'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105 ml-2'
                     } `}
                 >
                   <span className="relative z-10">{item.label}</span>
                 </Link>
-              ) : (
+              ) :(
                 <a
                   key={item.label}
                   href={item.target}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`rounded-full text-sm font-medium text-bv-secondary hover: text-bv-primary transition-all duration-300 relative group overflow-hidden flex items-center ${scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden flex items-center ${scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' :'px-5 py-2 hover:bg-white/80'
                     } `}
                 >
                   <span className="relative z-10">{item.label}</span>
@@ -625,7 +625,7 @@ const Header = () => {
             className="md:hidden w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-lg shadow-bv-primary/5 text-bv-primary border border-white/40"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={20} /> :<Menu size={20} />}
           </button>
         </nav>
       </header>
@@ -644,7 +644,7 @@ const Header = () => {
                   {item.label}
                   <span className="w-2 h-2 rounded-full bg-bv-cta opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 </button>
-              ) : item.type === 'route' ? (
+              ) :item.type === 'route' ? (
                 <Link
                   key={item.label}
                   to={item.target}
@@ -653,7 +653,7 @@ const Header = () => {
                 >
                   <span className="relative z-10">{item.label}</span>
                 </Link>
-              ) : (
+              ) :(
                 <a
                   key={item.label}
                   href={item.target}
@@ -681,9 +681,9 @@ const Hero = () => {
       <div className="absolute inset-0 z-0 pointer-events-none opacity-10">
         <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
           <path d="M0,20 Q25,50 50,20 T100,50" fill="none" stroke="#3B82F6" strokeWidth="0.5" className="animate-float" />
-          <path d="M0,40 Q25,10 50,40 T100,10" fill="none" stroke="#0369A1" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '1s' }} />
-          <path d="M0,60 Q25,90 50,60 T100,90" fill="none" stroke="#334155" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '2s' }} />
-          <path d="M0,80 Q40,40 60,80 T100,30" fill="none" stroke="#0F172A" strokeWidth="0.5" className="animate-float" style={{ animationDelay: '3s' }} />
+          <path d="M0,40 Q25,10 50,40 T100,10" fill="none" stroke="#0369A1" strokeWidth="0.5" className="animate-float" style={{ animationDelay:'1s' }} />
+          <path d="M0,60 Q25,90 50,60 T100,90" fill="none" stroke="#334155" strokeWidth="0.5" className="animate-float" style={{ animationDelay:'2s' }} />
+          <path d="M0,80 Q40,40 60,80 T100,30" fill="none" stroke="#0F172A" strokeWidth="0.5" className="animate-float" style={{ animationDelay:'3s' }} />
         </svg>
       </div>
 
@@ -776,7 +776,7 @@ const IdentitySection = () => {
 
         {/* Cards Layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 w-full">
-          {/* Card 1: Venture Studio */}
+          {/* Card 1:Venture Studio */}
           <div className="md:col-span-5 md:col-start-2 group interactive-hover z-10">
             <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border border-white/40 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-pink-500/10 transition-all duration-500 hover:-translate-y-1">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform duration-500">
@@ -787,7 +787,7 @@ const IdentitySection = () => {
             </div>
           </div>
 
-          {/* Card 2: Influence Engine-Positioned lower */}
+          {/* Card 2:Influence Engine-Positioned lower */}
           <div className="md:col-span-6 md:col-start-7 md:mt-32 group interactive-hover z-10">
             <div className="relative bg-white/30 backdrop-blur-2xl p-12 rounded-[2.5rem] border-2 border-purple-500/40 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/30 transform md:rotate-1 hover:rotate-0 transition-all duration-700 hover:-translate-y-2 overflow-hidden">
               {/* Animated gradient background */}
@@ -811,7 +811,7 @@ const IdentitySection = () => {
             </div>
           </div>
 
-          {/* Card 3: Legal-First Web3-Overlays Influence Engine */}
+          {/* Card 3:Legal-First Web3-Overlays Influence Engine */}
           <div className="md:col-span-5 md:col-start-3 md:-mt-20 group interactive-hover z-30">
             <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border-l-8 border-emerald-500 border-t border-r border-b border-t-white/40 border-r-white/40 border-b-white/40 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-1">
               <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform duration-500">
@@ -857,7 +857,7 @@ const PhilosophySection = () => {
 const ValleyCastSection = () => {
   return (
     <section id="valleycast" className="py-24 bg-black text-white overflow-hidden relative">
-      <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
+      <div className="absolute inset-0 opacity-10" style={{ backgroundImage:`url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -891,12 +891,12 @@ const ValleyCastSection = () => {
             <div className="relative z-10 bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-1 border border-gray-700 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500 interactive-hover">
               {/* Replace the dynamic sound-wave placeholder with the VALLEYCAST image from media/public */}
               <div className="bg-black rounded-2xl overflow-hidden aspect-video relative flex items-center justify-center group">
-                {/* ValleyCast: static poster/image (no play overlay) */}
+                {/* ValleyCast:static poster/image (no play overlay) */}
                 <img src="/VALLEYCAST8AM2.png" alt="ValleyCast Latest Episode" className="w-full h-full object-cover object-right" loading="lazy" />
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-xl font-bold text-white">Latest Episode: The Cognition Network</h3>
+                  <h3 className="text-xl font-bold text-white">Latest Episode:The Cognition Network</h3>
                   <span className="text-gray-300 text-sm">42:15</span>
                 </div>
                 <p className="text-gray-300 text-sm">Exploring how AI agents and human operators merge to form new intelligence nodes.</p>
@@ -937,14 +937,14 @@ const TeamSection = () => {
               <div className={`h-2 w-full bg-gradient-to-r ${member.color} opacity-80`}></div>
               <div className="p-8 flex flex-col items-center text-center">
                 <div className="mb-6 relative">
-                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${member.color} p-[2px] shadow-lg group-hover: scale-110 transition-transform duration-500`}>
+                  <div className={`w-24 h-24 rounded-full bg-gradient-to-br ${member.color} p-[2px] shadow-lg group-hover:scale-110 transition-transform duration-500`}>
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                       <span className={`text-3xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br ${member.color} `}>
                         {member.name.charAt(0)}
                       </span>
                     </div>
                   </div>
-                  <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${member.color} blur-xl opacity-20 group-hover: opacity-60 transition-opacity duration-500-z-10`}></div>
+                  <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${member.color} blur-xl opacity-20 group-hover:opacity-60 transition-opacity duration-500-z-10`}></div>
                 </div>
 
                 <h3 className="text-2xl font-display font-bold text-bv-primary mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-bv-cta group-hover:to-purple-500 transition-all duration-300">
@@ -1089,18 +1089,18 @@ const App = () => {
       <CustomCursor />
       <style>{`
 @keyframes bounce-slow {
-  0 %, 100 % { transform: translateY(-5 %); }
-  50 % { transform: translateY(5 %); }
+  0 %, 100 % { transform:translateY(-5 %); }
+  50 % { transform:translateY(5 %); }
 }
         .animate-bounce-slow {
-  animation: bounce-slow 3s infinite ease -in -out;
+  animation:bounce-slow 3s infinite ease -in -out;
 }
 @keyframes sound-wave {
-  0 %, 100 % { height: 10 %; }
-  50 % { height: 100 %; }
+  0 %, 100 % { height:10 %; }
+  50 % { height:100 %; }
 }
         .animate-sound-wave {
-  animation: sound-wave 1s infinite ease -in -out;
+  animation:sound-wave 1s infinite ease -in -out;
 }
 `}</style>
       <Header />
