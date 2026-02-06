@@ -2,9 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/BlockValleyLogoCut.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Block Valley - Global Venture Studio</title>
+    <link rel="icon" type="image/png" href="/BlockValleyLogoCut.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>Block Valley - Web3 Accelerator & Global Venture Studio</title>
+    <meta name="description" content="Block Valley combines capital, technology, narrative, and humanity to build the frontier of Web3, DeFi, RWA, and cryptocurrency innovation." />
+    <meta name="keywords" content="Block Valley, Web3, DeFi, RWA, Cryptocurrency, Venture Studio, Blockchain, Real World Assets" />
+    <meta name="author" content="Block Valley Labs" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Block Valley - Web3 Accelerator & Global Venture Studio" />
+    <meta property="og:description" content="Combining capital, technology, narrative, and humanity to build the frontier." />
+    <meta property="og:image" content="/BlockValley_Logo_Dark.png" />
+    <meta property="og:url" content="https://blockvalley.io" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@theblockvalley" />
+    <meta name="twitter:title" content="Block Valley - Web3 Accelerator" />
+    <meta name="twitter:description" content="Combining capital, technology, narrative, and humanity to build the frontier." />
+    <meta name="twitter:image" content="/BlockValley_Logo_Dark.png" />
+    
+    <!-- Performance & PWA -->
+    <meta name="theme-color" content="#EC4899" />
+    <link rel="canonical" href="https://blockvalley.io" />
+    
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
     <style>
       * {
         margin: 0;
@@ -15,10 +44,36 @@
         width: 100%;
         height: 100%;
       }
+      /* Loading Screen */
+      #loading {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        z-index: 9999;
+      }
     </style>
   </head>
   <body>
+    <div id="loading">
+      <svg width="60" height="60" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="40" stroke="#EC4899" stroke-width="8" fill="none" stroke-dasharray="60 200" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Remove loading screen once app loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loader = document.getElementById('loading');
+          if (loader) loader.style.display = 'none';
+        }, 500);
+      });
+    </script>
   </body>
 </html>
