@@ -718,18 +718,20 @@ const Hero = () => {
         {/* Right Content-Abstract Card Graphic */}
         <div className="lg:w-1/2 relative w-full">
           <div className="relative aspect-[4/3] bg-white/40 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-bv-primary/5 border border-white/60 backdrop-blur-3xl">
-            {/* Video Background */}
+            {/* Video Background - Optimized for Mobile */}
             <video
               poster="/BlockValley_Logo_FullText.png"
               autoPlay
               muted
               loop
               playsInline
+              preload="metadata"
+              loading="lazy"
               className="w-full h-full object-cover opacity-90 mix-blend-multiply"
             >
               <source src="/IMG_4443.MP4" type="video/mp4" />
               {/* Fallback image */}
-              <img src="/BlockValley_Logo_FullText.png" alt="Block Valley Banner" className="w-full h-full object-cover" />
+              <img src="/BlockValley_Logo_FullText.png" alt="Block Valley Banner" className="w-full h-full object-cover" loading="lazy" />
             </video>
 
             {/* Overlay Gradient */}
@@ -890,7 +892,7 @@ const ValleyCastSection = () => {
               {/* Replace the dynamic sound-wave placeholder with the VALLEYCAST image from media/public */}
               <div className="bg-black rounded-2xl overflow-hidden aspect-video relative flex items-center justify-center group">
                 {/* ValleyCast: static poster/image (no play overlay) */}
-                <img src="/VALLEYCAST8AM2.png" alt="ValleyCast Latest Episode" className="w-full h-full object-cover object-right" />
+                <img src="/VALLEYCAST8AM2.png" alt="ValleyCast Latest Episode" className="w-full h-full object-cover object-right" loading="lazy" />
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-center mb-2">
@@ -984,14 +986,19 @@ const Footer = () => {
             <p className="text-xl text-bv-secondary font-medium mb-8 max-w-md leading-relaxed">
               Combining capital, technology, narrative, and humanity to build the frontier.
             </p>
-            <div className="flex space-x-4">
-              <a href="https://x.com/TheBlockValley" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-gray-200 cursor-pointer">
+            <div className="flex flex-wrap gap-3">
+              <a href="https://x.com/theblockvalley" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Business Updates">
                 <XLogo size={18} color="white" />
               </a>
-              <a href="https://medium.com/@blockvalley" target="_blank" rel="noopener noreferrer" className="w-12 h-12 block hover:opacity-80 transition-opacity">
-                <img src="/Medium-Icon-Black.svg" alt="Medium" className="w-full h-full" />
+              <a href="https://x.com/0xblockvalley" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center hover:from-blue-600 hover:to-purple-700 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Community">
+                <XLogo size={18} color="white" />
               </a>
-              <a href="mailto:admin@blockvalley.io" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-bv-cta text-white flex items-center justify-center hover:bg-bv-cta/90 transition-colors shadow-lg shadow-gray-200 cursor-pointer">
+              <a href="https://blockvalley.medium.com/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Medium Blog">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                </svg>
+              </a>
+              <a href="mailto:admin@blockvalley.io" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-bv-cta text-white flex items-center justify-center hover:bg-bv-cta/90 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Email Us">
                 <Mail size={20} />
               </a>
             </div>

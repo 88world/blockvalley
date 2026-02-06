@@ -1,0 +1,24 @@
+{
+  "name": "Block Valley - Web3 Accelerator",
+  "short_name": "Block Valley",
+  "description": "Global Venture Studio combining capital, technology, narrative, and humanity to build the frontier.",
+  "icons": [
+    {
+      "src": "/BlockValleyLogoCut.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/BlockValley_Logo_Dark.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#EC4899",
+  "background_color": "#FFFFFF",
+  "orientation": "portrait-primary"
+}
