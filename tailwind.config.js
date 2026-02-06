@@ -7,11 +7,11 @@ export default {
     extend: {
       colors: {
         bv: {
-          primary: '#F1F5F9',   // Light Slate (for headings on dark bg)
-          secondary: '#94A3B8', // Slate 400
+          primary: '#0F172A',   // Slate 900 (for headings)
+          secondary: '#64748B', // Slate 400 (for secondary text)
           cta: '#0EA5E9',       // Sky 500 (Bright Blue)
-          background: '#ffffff', // Dark Slate
-          text: '#E2E8F0',      // Light Slate for body text
+          background: '#ffffff', // White background
+          text: '#1E293B',      // Slate 800 for body text
         }
       },
       animation: {
