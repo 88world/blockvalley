@@ -1048,7 +1048,7 @@ const Footer = () => {
                 <Link to="/privacy" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
