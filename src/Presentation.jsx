@@ -40,6 +40,7 @@ const Presentation = () => {
             <Trophy size={32} className="text-white md:w-12 md:h-12" />
           </div>
           <p className="text-sm md:text-lg tracking-[0.3em] uppercase opacity-80">Master Presentation 2026</p>
+          <p className="text-xs md:text-sm mt-2 opacity-60">Live & Updated</p>
         </div>
       )
     },
