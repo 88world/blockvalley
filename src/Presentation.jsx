@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Trophy, 
@@ -22,9 +22,31 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent)
+        || window.innerWidth < 768
+        || ('ontouchstart' in window)
+        || (navigator.maxTouchPoints > 0);
+      setIsMobile(mobile);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+  
+  return isMobile;
+};
+
 const Presentation = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const isMobile = useIsMobile();
 
   const slides = [
     // Slide 1: Title
@@ -311,7 +333,13 @@ const Presentation = () => {
 
   const current = slides[currentSlide];
 
-  const slideVariants = {
+  const slideVariants = isMobile ? {
+    // Simplified animations for mobile - no spring physics
+    enter: () => ({ opacity: 0 }),
+    center: { opacity: 1 },
+    exit: () => ({ opacity: 0 })
+  } : {
+    // Full animations for desktop
     enter: (direction) => ({
       x: direction > 0 ? 1000 : -1000,
       opacity: 0
@@ -335,8 +363,8 @@ const Presentation = () => {
 
   return (
     <div className="h-screen bg-[#0A0A0A] text-white flex flex-col font-sans overflow-hidden [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_h5]:text-white [&_h6]:text-white">
-      {/* Background Gradient Effect */}
-      <div className={`fixed inset-0 bg-gradient-to-br ${current.bg} opacity-20 blur-[100px] transition-all duration-1000`} />
+      {/* Background Gradient Effect - Reduce blur on mobile */}
+      <div className={`fixed inset-0 bg-gradient-to-br ${current.bg} ${isMobile ? 'opacity-15 blur-[50px]' : 'opacity-20 blur-[100px]'} transition-all duration-1000`} />
 
       {/* Header */}
       <nav className="relative z-10 p-4 md:p-6 flex justify-between items-center flex-shrink-0">
@@ -345,6 +373,7 @@ const Presentation = () => {
             src="/LABS_2.png" 
             alt="Block Valley Labs" 
             className="h-8 md:h-12 object-contain"
+            loading="eager"
           />
         </div>
         <div className="flex items-center gap-4 md:gap-8">
@@ -373,14 +402,16 @@ const Presentation = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            drag="x"
+            transition={isMobile ? 
+              // Faster, simpler transitions on mobile
+              { duration: 0.3, ease: "easeOut" } : 
+              // Smoother spring animations on desktop
+              { x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }
+            }
+            drag={isMobile ? false : "x"}
             dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
+            dragElastic={isMobile ? 0 : 1}
+            onDragEnd={isMobile ? undefined : (e, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
 
               if (swipe < -swipeConfidenceThreshold) {
@@ -400,6 +431,7 @@ const Presentation = () => {
                         src="/LABS_2.png" 
                         alt="Block Valley Labs" 
                         className="w-full max-w-2xl md:max-w-4xl h-auto object-contain"
+                        loading="eager"
                       />
                     ) : (
                       <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase italic tracking-tighter leading-none">

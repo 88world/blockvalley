@@ -72,3 +72,145 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #0284c7;
 }
+
+/* Mobile Performance Optimizations */
+@media (max-width: 768px) {
+    /* Reduce blur effects on mobile for better performance */
+    .backdrop-blur-3xl {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .backdrop-blur-2xl {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+    
+    .backdrop-blur-xl {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+    }
+    
+    .backdrop-blur-lg {
+        backdrop-filter: blur(3px);
+        -webkit-backdrop-filter: blur(3px);
+    }
+    
+    .blur-3xl {
+        filter: blur(24px);
+    }
+    
+    .blur-2xl {
+        filter: blur(16px);
+    }
+    
+    .blur-xl {
+        filter: blur(8px);
+    }
+    
+    /* Disable expensive animations on mobile */
+    .animate-pulse-slow {
+        animation: none;
+    }
+    
+    /* Simplify gradients on mobile */
+    .bg-gradient-to-br,
+    .bg-gradient-to-bl,
+    .bg-gradient-to-tr,
+    .bg-gradient-to-tl {
+        background-image: linear-gradient(135deg, var(--tw-gradient-stops));
+    }
+}
+
+/* Hardware Acceleration - Apply only where needed */
+.will-change-transform {
+    will-change: transform;
+}
+
+/* Touch optimization for mobile */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    button, a, [role="button"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .hover\:scale-105:hover,
+    .hover\:scale-110:hover,
+    .hover\:scale-125:hover,
+    .group-hover\:scale-110,
+    .group-hover\:scale-125 {
+        transform: scale(1);
+    }
+    
+    /* Disable complex hover transitions */
+    .hover\:-translate-y-1:hover,
+    .hover\:-translate-y-2:hover {
+        transform: translateY(0);
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* GPU acceleration for specific animations */
+@keyframes gradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.animate-gradient {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Optimize floating animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateZ(0);
+    }
+    50% {
+        transform: translateY(-10px) translateZ(0);
+    }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Lazy loading optimization */
+img[loading="lazy"],
+video[loading="lazy"] {
+    content-visibility: auto;
+}
+
+/* Improve paint performance */
+.interactive-hover {
+    contain: layout style paint;
+}
+
+/* Optimize backdrop filters */
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+.backdrop-blur-3xl {
+    -webkit-backdrop-filter: blur(var(--blur-amount, 8px));
+    backdrop-filter: blur(var(--blur-amount, 8px));
+    transform: translateZ(0);
+}
