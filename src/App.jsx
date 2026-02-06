@@ -105,10 +105,8 @@ const IntroAnimation = ({ onComplete }) => {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <button className="relative px-8 py-3 rounded-full border border-gray-200 bg-white/50 backdrop-blur-sm text-gray-900 font-mono text-xs uppercase tracking-[0.2em] overflow-hidden transition-all duration-500 group-hover:tracking-[0.3em] group-hover:border-transparent hover:shadow-xl">
-            <span className="relative z-10 group-hover:text-white transition-colors duration-500">Enter Valley</span>
-            {/* Hover Fill Effect */}
-            <div className="absolute inset-0 bg-black translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0"></div>
+          <button className="px-8 py-3 rounded-full border-2 border-gray-900 bg-white text-gray-900 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 hover:bg-gray-900 hover:text-white">
+            Enter Valley
           </button>
         </div>
 
@@ -592,24 +590,23 @@ const Header = () => {
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.target)}
-                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden ${
-                    scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  className={`rounded-full text-sm font-medium text-slate-800 hover:text-black transition-colors duration-200 ${
+                    scrolled ? 'px-4 py-1.5 hover:bg-slate-50' : 'px-5 py-2 hover:bg-white/60'
                   }`}
                 >
-                  <span className="relative z-10">{item.label}</span>
-                  {!scrolled && <span className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full shadow-sm"></span>}
+                  {item.label}
                 </button>
               ) : item.type === 'route' ? (
                 <Link
                   key={item.label}
                   to={item.target}
-                  className={`rounded-full text-sm font-semibold transition-all duration-300 relative group overflow-hidden flex items-center ${
+                  className={`rounded-full text-sm font-semibold transition-colors duration-200 flex items-center ${
                     scrolled 
-                      ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105' 
-                      : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white hover:scale-105 ml-2'
+                      ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white' 
+                      : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white ml-2'
                   }`}
                 >
-                  <span className="relative z-10">{item.label}</span>
+                  {item.label}
                 </Link>
               ) : (
                 <a
@@ -617,12 +614,11 @@ const Header = () => {
                   href={item.target}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`rounded-full text-sm font-medium text-bv-secondary hover:text-bv-primary transition-all duration-300 relative group overflow-hidden flex items-center ${
-                    scrolled ? 'px-4 py-1.5 hover:bg-bv-secondary/5' : 'px-5 py-2 hover:bg-white/80'
+                  className={`rounded-full text-sm font-medium text-slate-800 hover:text-black transition-colors duration-200 flex items-center ${
+                    scrolled ? 'px-4 py-1.5 hover:bg-slate-50' : 'px-5 py-2 hover:bg-white/60'
                   }`}
                 >
-                  <span className="relative z-10">{item.label}</span>
-                  {!scrolled && <span className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full shadow-sm"></span>}
+                  {item.label}
                 </a>
               )
             )}
@@ -630,7 +626,7 @@ const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center shadow-lg shadow-bv-primary/5 text-bv-primary border border-white/40"
+            className="md:hidden w-10 h-10 rounded-full bg-white flex items-center justify-center text-black border-2 border-black hover:bg-black hover:text-white transition-colors duration-200"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -647,19 +643,18 @@ const Header = () => {
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.target)}
-                  className="text-left py-3 px-4 text-base font-display font-semibold text-bv-secondary hover:text-bv-primary hover:bg-bv-secondary/5 rounded-xl transition-colors flex items-center justify-between group w-full"
+                  className="text-left py-3 px-4 text-base font-semibold text-slate-800 hover:text-black hover:bg-slate-50 rounded-xl transition-colors w-full"
                 >
                   {item.label}
-                  <span className="w-2 h-2 rounded-full bg-bv-cta opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 </button>
               ) : item.type === 'route' ? (
                 <Link
                   key={item.label}
                   to={item.target}
-                  className="text-center py-4 px-6 text-base font-display font-bold border-2 border-pink-500 text-pink-600 rounded-2xl transition-all flex items-center justify-center group w-full hover:bg-pink-500 hover:text-white hover:scale-[1.02] mt-3"
+                  className="text-center py-4 px-6 text-base font-semibold border-2 border-pink-500 text-pink-600 rounded-2xl transition-colors flex items-center justify-center w-full hover:bg-pink-500 hover:text-white mt-3"
                   onClick={() => setIsOpen(false)}
                 >
-                  <span className="relative z-10">{item.label}</span>
+                  {item.label}
                 </Link>
               ) : (
                 <a
@@ -667,11 +662,10 @@ const Header = () => {
                   href={item.target}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-left py-3 px-4 text-base font-display font-semibold text-bv-secondary hover:text-bv-primary hover:bg-bv-secondary/5 rounded-xl transition-colors flex items-center justify-between group w-full"
+                  className="text-left py-3 px-4 text-base font-semibold text-slate-800 hover:text-black hover:bg-slate-50 rounded-xl transition-colors w-full"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
-                  <span className="w-2 h-2 rounded-full bg-bv-cta opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 </a>
               )
             )}
@@ -698,7 +692,7 @@ const Hero = () => {
       <div className="container mx-auto px-6 z-10 flex flex-col lg:flex-row items-center justify-between gap-16">
         {/* Left Content */}
         <div className="lg:w-1/2 relative z-10">
-          <div className="inline-block px-4 py-1.5 rounded-full bg-bv-secondary/5 text-xs font-bold tracking-widest uppercase text-bv-secondary mb-8 border border-bv-secondary/10">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-slate-100 text-xs font-bold tracking-widest uppercase text-slate-600 mb-8 border border-slate-200">
             Global Venture Studio
           </div>
 
@@ -714,10 +708,10 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-4 bg-bv-primary text-white rounded-full font-bold hover:bg-bv-secondary shadow-lg shadow-bv-primary/20 transition-transform transform hover:scale-105 flex items-center justify-center interactive-hover">
+            <button className="px-8 py-4 bg-black text-white border-2 border-black rounded-full font-semibold transition-colors duration-200 hover:bg-white hover:text-black flex items-center justify-center">
               Our Vision <ArrowRight className="ml-2 w-5 h-5" />
             </button>
-            <button className="px-8 py-4 bg-white/50 text-bv-primary border border-bv-secondary/20 rounded-full font-bold hover:bg-white transition-all backdrop-blur-sm interactive-hover">
+            <button className="px-8 py-4 bg-white text-black border-2 border-black rounded-full font-semibold transition-colors duration-200 hover:bg-black hover:text-white">
               Explore Services
             </button>
           </div>
@@ -751,8 +745,8 @@ const Hero = () => {
                 <Globe size={20} />
               </div>
               <div>
-                <div className="text-[10px] font-bold text-bv-secondary/80 uppercase tracking-wider">Hubs In</div>
-                <div className="text-sm font-bold text-bv-primary">HK • SG • UAE • US</div>
+                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Hubs In</div>
+                <div className="text-sm font-bold text-slate-900">HK • SG • UAE • US</div>
               </div>
             </div>
           </div>
@@ -890,7 +884,7 @@ const ValleyCastSection = () => {
               ))}
             </div>
 
-            <button className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-200 transition-colors flex items-center interactive-hover">
+            <button className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-gray-100 hover:scale-105 transition-all flex items-center interactive-hover shadow-lg shadow-white/20">
               <Play className="w-5 h-5 mr-3 fill-current" /> Listen Now
             </button>
           </div>
@@ -928,10 +922,10 @@ const TeamSection = () => {
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-7xl font-display font-black mb-6 text-bv-primary tracking-tight">
+          <h2 className="text-5xl md:text-7xl font-display font-black mb-6 text-slate-900 tracking-tight">
             THE ARCHITECTS
           </h2>
-          <p className="text-bv-secondary text-xl max-w-2xl mx-auto font-light">
+          <p className="text-slate-600 text-xl max-w-2xl mx-auto font-light">
             A distributed network of explorers and operators.
           </p>
         </div>
@@ -955,10 +949,10 @@ const TeamSection = () => {
                   <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${member.color} blur-xl opacity-20 group-hover:opacity-60 transition-opacity duration-500 -z-10`}></div>
                 </div>
 
-                <h3 className="text-2xl font-display font-bold text-bv-primary mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-bv-cta group-hover:to-purple-500 transition-all duration-300">
+                <h3 className="text-2xl font-display font-bold text-slate-900 mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-bv-cta group-hover:to-purple-500 transition-all duration-300">
                   {member.name}
                 </h3>
-                <p className="text-xs text-bv-secondary uppercase tracking-widest font-bold opacity-70">{member.role}</p>
+                <p className="text-xs text-slate-600 uppercase tracking-widest font-bold opacity-70">{member.role}</p>
               </div>
             </div>
           ))}
@@ -975,7 +969,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
             <img src="/BlockValley_Logo_Dark.png" alt="Logo" className="h-10 w-auto mb-8 opacity-90" />
-            <p className="text-xl text-bv-secondary font-medium mb-8 max-w-md leading-relaxed">
+            <p className="text-xl text-slate-600 font-medium mb-8 max-w-md leading-relaxed">
               Combining capital, technology, narrative, and humanity to build the frontier.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -997,8 +991,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Global Hubs</h4>
-            <ul className="space-y-6 text-bv-secondary">
+            <h4 className="font-display font-bold text-slate-900 mb-6 text-lg">Global Hubs</h4>
+            <ul className="space-y-6 text-slate-700">
               <li className="flex items-start group">
                 <span className="w-2 h-2 mt-2 bg-bv-cta rounded-full mr-3 group-hover:scale-150 transition-transform duration-300"></span>
                 <div>
@@ -1024,8 +1018,8 @@ const Footer = () => {
           </div>
 
           <div>
-            <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Quick Links</h4>
-            <ul className="space-y-4 text-bv-secondary font-medium">
+            <h4 className="font-display font-bold text-slate-900 mb-6 text-lg">Quick Links</h4>
+            <ul className="space-y-4 text-slate-700 font-medium">
               <li>
                 <a href="mailto:admin@blockvalley.io" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
