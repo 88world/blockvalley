@@ -318,8 +318,8 @@ const InteractiveCard = ({ item }) => {
       const rect = cardRef.current.getBoundingClientRect();
       prevMousePos.current = { ...mousePos.current };
       mousePos.current = {
-        x: e.clientX-rect.left,
-        y: e.clientY-rect.top
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
       };
     }
   };
@@ -344,25 +344,25 @@ const InteractiveCard = ({ item }) => {
     p.angle += speed * 1.5;
 
     // 3. Wall Collision
-    if (p.pos.x-p.radius < 0) {
+    if (p.pos.x - p.radius < 0) {
       p.pos.x = p.radius;
       p.vel.x *= -1 * p.restitution;
     } else if (p.pos.x + p.radius > rect.width) {
-      p.pos.x = rect.width-p.radius;
+      p.pos.x = rect.width - p.radius;
       p.vel.x *= -1 * p.restitution;
     }
 
-    if (p.pos.y-p.radius < 0) {
+    if (p.pos.y - p.radius < 0) {
       p.pos.y = p.radius;
       p.vel.y *= -1 * p.restitution;
     } else if (p.pos.y + p.radius > rect.height) {
-      p.pos.y = rect.height-p.radius;
+      p.pos.y = rect.height - p.radius;
       p.vel.y *= -1 * p.restitution;
     }
 
     // 4. "RACKET HIT" COLLISION logic
-    const dx = p.pos.x-mousePos.current.x;
-    const dy = p.pos.y-mousePos.current.y;
+    const dx = p.pos.x - mousePos.current.x;
+    const dy = p.pos.y - mousePos.current.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
     // Hit radius = ball radius + buffer
@@ -405,8 +405,8 @@ const InteractiveCard = ({ item }) => {
     }
 
     // 6. Render
-    const renderX = p.pos.x-p.radius;
-    const renderY = p.pos.y-p.radius;
+    const renderX = p.pos.x - p.radius;
+    const renderY = p.pos.y - p.radius;
     ballRef.current.style.transform = `translate3d(${renderX}px, ${renderY}px, 0) rotate(${p.angle}deg)`;
 
     requestRef.current = requestAnimationFrame(animate);
@@ -995,7 +995,7 @@ const Footer = () => {
               </a>
               <a href="https://blockvalley.medium.com/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center hover:bg-gray-800 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Medium Blog">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                  <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
                 </svg>
               </a>
               <a href="mailto:admin@blockvalley.io" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-bv-cta text-white flex items-center justify-center hover:bg-bv-cta/90 transition-colors shadow-lg shadow-gray-200 cursor-pointer" title="Email Us">
@@ -1035,13 +1035,13 @@ const Footer = () => {
             <h4 className="font-display font-bold text-bv-primary mb-6 text-lg">Quick Links</h4>
             <ul className="space-y-4 text-bv-secondary font-medium">
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <a href="mailto:admin@blockvalley.io" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   Work With Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <a href="https://x.com/theblockvalley" target="_blank" rel="noopener noreferrer" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   ValleyCast Episodes
                 </a>
@@ -1053,10 +1053,10 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-bv-cta transition-colors flex items-center group">
+                <Link to="/privacy" className="hover:text-bv-cta transition-colors flex items-center group">
                   <span className="w-0 h-[1px] bg-bv-cta mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-300"></span>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
