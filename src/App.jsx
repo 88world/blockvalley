@@ -10,7 +10,6 @@ const IntroAnimation = ({ onComplete }) => {
   const [textIndex, setTextIndex] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-
   const phrases = [
     "Web3 Accelerator",
     "Real World Assets",
