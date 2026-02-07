@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Menu, X, Globe, Cpu, Zap, Layers,
@@ -51,6 +51,8 @@ const IntroAnimation = ({ onComplete }) => {
   const [isExiting, setIsExiting] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const isMobile = useIsMobile();
+  const prefersReducedMotion = useReducedMotion();
+  const shouldAnimate = !isMobile && !prefersReducedMotion;
 
   const phrases = [
     "Web3 Accelerator",
@@ -98,7 +100,7 @@ const IntroAnimation = ({ onComplete }) => {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <div className={`absolute inset-0 w-full h-full ${isMobile ? '' : 'animate-spin-slow'} ${isExiting ? 'animate-spin-fast' : ''}`}>
+          <div className={`absolute inset-0 w-full h-full ${shouldAnimate ? 'animate-spin-slow' : ''} ${isExiting && shouldAnimate ? 'animate-spin-fast' : ''}`}>
 
             {/* Pink Lobe - Reduced blur on mobile */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
@@ -327,6 +329,7 @@ const InteractiveCard = ({ item }) => {
   const mousePos = useRef({ x: -1000, y: -1000 });
   const prevMousePos = useRef({ x: -1000, y: -1000 });
   const isMobile = useIsMobile();
+  const prefersReducedMotion = useReducedMotion();
 
   // Physics State
   const physics = useRef({
@@ -339,8 +342,8 @@ const InteractiveCard = ({ item }) => {
   });
 
   const handleMouseEnter = () => {
-    // Disable physics on mobile for performance
-    if (isMobile) return;
+    // Disable physics on mobile for performance or if reduced motion is preferred
+    if (isMobile || prefersReducedMotion) return;
 
     isHovered.current = true;
     if (cardRef.current) {
