@@ -1,15 +1,57 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Menu, X, Globe, Cpu, Zap, Layers,
   ArrowRight, Users, Play, Mic, ShieldCheck, Mail
 } from 'lucide-react';
 
+// --- MOBILE DETECTION HOOK ---
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent)
+        || window.innerWidth < 768
+        || ('ontouchstart' in window)
+        || (navigator.maxTouchPoints > 0);
+      setIsMobile(mobile);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
+// --- PERFORMANCE PREFERENCE HOOK ---
+const useReducedMotion = () => {
+  const [reducedMotion, setReducedMotion] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
+
+  return reducedMotion;
+};
+
 // --- 0. INTRO ANIMATION COMPONENT ---
 const IntroAnimation = ({ onComplete }) => {
   const [textIndex, setTextIndex] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const isMobile = useIsMobile();
+
   const phrases = [
     "Web3 Accelerator",
     "Real World Assets",
@@ -56,49 +98,51 @@ const IntroAnimation = ({ onComplete }) => {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-          <div className={`absolute inset-0 w-full h-full animate-spin-slow ${isExiting ? 'animate-spin-fast' : ''} `}>
+          <div className={`absolute inset-0 w-full h-full ${isMobile ? '' : 'animate-spin-slow'} ${isExiting ? 'animate-spin-fast' : ''}`}>
 
-            {/* Pink Lobe */}
+            {/* Pink Lobe - Reduced blur on mobile */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
               style={{ transform: `rotate(0deg) translateY(${isHovering ? '-10%' : '0'})` }}>
-              <div className="w-full h-full rounded-full bg-gradient-to-b from-pink-500 to-pink-300 mix-blend-multiply opacity-80 blur-xl"></div>
+              <div className={`w-full h-full rounded-full bg-gradient-to-b from-pink-500 to-pink-300 mix-blend-multiply opacity-80 ${isMobile ? 'blur-md' : 'blur-xl'}`}></div>
             </div>
 
-            {/* Blue Lobe */}
+            {/* Blue Lobe - Reduced blur on mobile */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
               style={{ transform: `rotate(120deg) translateY(${isHovering ? '-10%' : '0'})` }}>
-              <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-blue-300 mix-blend-multiply opacity-80 blur-xl"></div>
+              <div className={`w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-blue-300 mix-blend-multiply opacity-80 ${isMobile ? 'blur-md' : 'blur-xl'}`}></div>
             </div>
 
-            {/* Green Lobe */}
+            {/* Green Lobe - Reduced blur on mobile */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[60%] origin-bottom transition-all duration-500"
               style={{ transform: `rotate(240deg) translateY(${isHovering ? '-10%' : '0'})` }}>
-              <div className="w-full h-full rounded-full bg-gradient-to-b from-green-500 to-green-300 mix-blend-multiply opacity-80 blur-xl"></div>
+              <div className={`w-full h-full rounded-full bg-gradient-to-b from-green-500 to-green-300 mix-blend-multiply opacity-80 ${isMobile ? 'blur-md' : 'blur-xl'}`}></div>
             </div>
 
           </div>
 
-          {/* Inner White Core */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-white rounded-full blur-xl"></div>
-        </div>
+          {/* Inner White Core - Reduced blur on mobile */}
+          <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30%] h-[30%] bg-white rounded-full ${isMobile ? 'blur-md' : 'blur-xl'}`}></div>
+        </div >
 
         {/* DIGITAL TEXT OVERLAY */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none">
-          {phrases.map((phrase, idx) => (
-            <h2
-              key={idx}
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl md:text-5xl font-bold tracking-tighter uppercase transition-all duration-1000 transform whitespace-nowrap
+        < div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center pointer-events-none" >
+          {
+            phrases.map((phrase, idx) => (
+              <h2
+                key={idx}
+                className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl md:text-5xl font-bold tracking-tighter uppercase transition-all duration-1000 transform whitespace-nowrap
                 ${idx === textIndex ? 'opacity-20 blur-0 scale-100' : 'opacity-0 blur-md scale-90'}
 `}
-              style={{ color: '#111' }}
-            >
-              {phrase}
-            </h2>
-          ))}
-        </div>
+                style={{ color: '#111' }}
+              >
+                {phrase}
+              </h2>
+            ))
+          }
+        </div >
 
         {/* TRENDY INTERACTIVE BUTTON */}
-        <div
+        < div
           className="absolute bottom-20 left-1/2 -translate-x-1/2 group"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
@@ -106,9 +150,9 @@ const IntroAnimation = ({ onComplete }) => {
           <button className="px-8 py-3 rounded-full border-2 border-gray-900 bg-white text-gray-900 font-semibold text-sm uppercase tracking-wide transition-colors duration-200 hover:bg-gray-900 hover:text-white">
             Enter Valley
           </button>
-        </div>
+        </div >
 
-      </div>
+      </div >
 
       <style>{`
 @keyframes spin-slow {
@@ -122,7 +166,7 @@ const IntroAnimation = ({ onComplete }) => {
   animation:spin-slow 1.5s cubic-bezier(0.5, 0, 1, 1) infinite;
 }
 `}</style>
-    </div>
+    </div >
   );
 };
 
@@ -131,8 +175,12 @@ const CustomCursor = () => {
   const cursorRef = useRef(null);
   const [isHovering, setIsHovering] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Don't set up event listeners on mobile
+    if (isMobile) return;
+
     const onMouseMove = (e) => {
       // Direct, instant movement using transform for performance (No Lag)
       if (cursorRef.current) {
@@ -163,7 +211,10 @@ const CustomCursor = () => {
       window.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Don't render cursor on mobile at all
+  if (isMobile) return null;
 
   return (
     <>
@@ -275,6 +326,7 @@ const InteractiveCard = ({ item }) => {
   const isHovered = useRef(false);
   const mousePos = useRef({ x: -1000, y: -1000 });
   const prevMousePos = useRef({ x: -1000, y: -1000 });
+  const isMobile = useIsMobile();
 
   // Physics State
   const physics = useRef({
@@ -287,6 +339,9 @@ const InteractiveCard = ({ item }) => {
   });
 
   const handleMouseEnter = () => {
+    // Disable physics on mobile for performance
+    if (isMobile) return;
+
     isHovered.current = true;
     if (cardRef.current) {
       const rect = cardRef.current.getBoundingClientRect();
@@ -421,7 +476,7 @@ const InteractiveCard = ({ item }) => {
       className={`${item.color} ${item.size} relative rounded-3xl p-8 text-white overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 min-h-[260px] flex flex-col justify-between interactive-hover`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-bl-full transform translate-x-10 -translate-y-10"></div>
 
@@ -431,24 +486,26 @@ const InteractiveCard = ({ item }) => {
             {item.icon}
           </div>
 
-          <div
-            ref={ballRef}
-            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 will-change-transform pointer-events-auto"
-          >
-            <TennisBall
-              fillColor="#ffffff"
-              seamColor={item.accentColor}
-              size={70}
-            />
-          </div>
-        </div>
+          {!isMobile && (
+            <div
+              ref={ballRef}
+              className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 will-change-transform pointer-events-auto"
+            >
+              <TennisBall
+                fillColor="#ffffff"
+                seamColor={item.accentColor}
+                size={70}
+              />
+            </div>
+          )}
+        </div >
 
         <h3 className="text-2xl md:text-3xl font-bold mb-2 leading-tight drop-shadow-md text-white">{item.title}</h3>
         <p className="text-white/95 font-medium text-lg leading-relaxed opacity-90 group-hover:opacity-100">
           {item.desc}
         </p>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 
@@ -521,6 +578,7 @@ const teamData = [
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -548,10 +606,10 @@ const Header = () => {
       <header className="fixed top-0 left-0 w-full z-50 flex justify-center pt-6 pointer-events-none">
         <nav
           className={`pointer-events-auto transition-all duration-500 ease-out ${scrolled || isOpen
-            ? 'w-[90%] md:w-[760px] bg-white/90 backdrop-blur-2xl border border-white/60 shadow-xl shadow-bv-primary/10'
+            ? `w-[90%] md:w-[760px] bg-white/90 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-2xl'} border border-white/60 shadow-xl shadow-bv-primary/10`
             : 'w-full max-w-7xl bg-transparent'
             } rounded-full px-3 py-2.5 flex items-center justify-between mx-auto ${scrolled ? 'gap-3' : 'gap-4'
-            } `}
+            }`}
         >
           {/* Logo-Switch between Full and Icon based on scroll */}
           <div
@@ -563,16 +621,18 @@ const Header = () => {
             <img
               src="/BlockValley_Logo_Dark.png"
               alt="Block Valley"
-              className={`h-14 w-auto object-contain transition-all duration-300 absolute left-1/2-translate-x-1/2 ${scrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
-                } `}
+              loading="eager"
+              className={`h-14 w-auto object-contain transition-all duration-300 absolute left-1/2 -translate-x-1/2 ${scrolled ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+                }`}
             />
 
             {/* Icon Logo (Visible when scrolled) */}
             <img
               src="/BlockValleyLogoCut.png"
               alt="BV Icon"
-              className={`h-10 w-10 object-contain transition-all duration-300 absolute left-1/2-translate-x-1/2 ${scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'
-                } `}
+              loading="eager"
+              className={`h-10 w-10 object-contain transition-all duration-300 absolute left-1/2 -translate-x-1/2 ${scrolled ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'
+                }`}
             />
           </div>
 
@@ -594,8 +654,8 @@ const Header = () => {
                   key={item.label}
                   to={item.target}
                   className={`rounded-full text-sm font-semibold transition-colors duration-200 flex items-center ${scrolled
-                      ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white'
-                      : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white ml-2'
+                    ? 'px-5 py-2 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white'
+                    : 'px-6 py-2.5 border-2 border-pink-500 text-pink-600 hover:bg-pink-500 hover:text-white ml-2'
                     }`}
                 >
                   {item.label}
@@ -627,7 +687,7 @@ const Header = () => {
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-bv-primary/10 z-40 p-4 md:hidden border border-white/50">
+        <div className={`fixed top-24 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white/95 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-2xl'} rounded-3xl shadow-2xl shadow-bv-primary/10 z-40 p-4 md:hidden border border-white/50`}>
           <div className="flex flex-col space-y-1">
             {menuItems.map((item) =>
               item.type === 'scroll' ? (
@@ -668,6 +728,8 @@ const Header = () => {
 };
 
 const Hero = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section className="relative min-h-screen flex items-center pt-32 md:pt-20 overflow-hidden bg-bv-background">
       {/* Background Ribbons-Refined for Liquid Glass feel */}
@@ -710,7 +772,7 @@ const Hero = () => {
 
         {/* Right Content-Abstract Card Graphic */}
         <div className="lg:w-1/2 relative w-full">
-          <div className="relative aspect-[4/3] bg-white/40 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-bv-primary/5 border border-white/60 backdrop-blur-3xl">
+          <div className={`relative aspect-[4/3] bg-white/40 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-bv-primary/5 border border-white/60 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-3xl'}`}>
             {/* Video Background - Optimized for Mobile */}
             <video
               poster="/BlockValley_Logo_FullText.png"
@@ -718,7 +780,7 @@ const Hero = () => {
               muted
               loop
               playsInline
-              preload="metadata"
+              preload={isMobile ? "none" : "metadata"}
               loading="lazy"
               className="w-full h-full object-cover opacity-90 mix-blend-multiply"
             >
@@ -731,7 +793,7 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-bv-primary/10 to-transparent pointer-events-none"></div>
 
             {/* Floating Hubs Pill */}
-            <div className="absolute bottom-8 left-8 bg-white/80 backdrop-blur-md shadow-lg shadow-bv-primary/5 rounded-2xl p-4 flex items-center gap-4 border border-white/50 max-w-xs z-20">
+            <div className={`absolute bottom-8 left-8 bg-white/80 ${isMobile ? 'backdrop-blur-sm' : 'backdrop-blur-md'} shadow-lg shadow-bv-primary/5 rounded-2xl p-4 flex items-center gap-4 border border-white/50 max-w-xs z-20`}>
               <div className="w-10 h-10 rounded-full bg-bv-cta/10 text-bv-cta flex items-center justify-center">
                 <Globe size={20} />
               </div>
@@ -742,8 +804,8 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Background Decor Layer behind the card */}
-          <div className="absolute -inset-4 bg-gradient-to-r from-bv-cta/20 to-purple-500/20 rounded-[3rem] blur-3xl -z-10 opacity-60 animate-pulse-slow"></div>
+          {/* Background Decor Layer behind the card - Reduced blur on mobile */}
+          <div className={`absolute -inset-4 bg-gradient-to-r from-bv-cta/20 to-purple-500/20 rounded-[3rem] ${isMobile ? 'blur-2xl' : 'blur-3xl'} -z-10 opacity-60 animate-pulse-slow`}></div>
         </div>
       </div>
     </section>
@@ -751,13 +813,15 @@ const Hero = () => {
 };
 
 const IdentitySection = () => {
-  return (
-    <section id="identity" className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-gray-50">
-      {/* Background Ambient Effects */}
-      <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-pink-200/20 via-purple-200/20 to-transparent rounded-full blur-[120px]"></div>
-      <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-gradient-to-tr from-blue-200/20 via-cyan-200/20 to-transparent rounded-full blur-[100px]"></div>
+  const isMobile = useIsMobile();
 
-      <div className="container mx-auto px-6 relative z-10">
+  return (
+    <section id="identity" className="py-32 md:py-40 relative bg-gradient-to-br from-slate-50 via-white to-gray-50">
+      {/* Background Ambient Effects */}
+      <div className="absolute top-20 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-pink-200/20 via-purple-200/20 to-transparent rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-[700px] h-[700px] bg-gradient-to-tr from-blue-200/20 via-cyan-200/20 to-transparent rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div className="container mx-auto px-6 lg:px-16 relative z-10">
         {/* Section Header */}
         <div className="mb-20 flex flex-col items-start w-full max-w-4xl">
           <span className="text-pink-600 font-bold tracking-[0.3em] uppercase mb-6 text-xs">Who We Are</span>
@@ -768,10 +832,11 @@ const IdentitySection = () => {
         </div>
 
         {/* Cards Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 w-full">
-          {/* Card 1:Venture Studio */}
-          <div className="md:col-span-5 md:col-start-2 group interactive-hover z-10">
-            <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border border-white/40 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-pink-500/10 transition-all duration-500 hover:-translate-y-1">
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16 w-full py-12 md:py-16">
+          {/* Card 1: Venture Studio */}
+          <div className="md:col-span-5 md:col-start-2 group interactive-hover z-10 p-4 md:p-8">
+            <div className={`relative bg-white/60 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-xl'} p-10 rounded-[2rem] border border-white/40 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-pink-500/10 transition-all duration-500 hover:-translate-y-1`}>
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform duration-500">
                 <Layers size={32} />
               </div>
@@ -780,15 +845,15 @@ const IdentitySection = () => {
             </div>
           </div>
 
-          {/* Card 2:Influence Engine-Positioned lower */}
-          <div className="md:col-span-6 md:col-start-7 md:mt-32 group interactive-hover z-10">
-            <div className="relative bg-white/30 backdrop-blur-2xl p-12 rounded-[2.5rem] border-2 border-purple-500/40 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/30 transform md:rotate-1 hover:rotate-0 transition-all duration-700 hover:-translate-y-2 overflow-hidden">
+          {/* Card 2: Influence Engine - Positioned lower */}
+          <div className="md:col-span-6 md:col-start-7 md:mt-16 group interactive-hover z-20 p-4 md:p-8">
+            <div className={`relative bg-white/30 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-2xl'} p-12 rounded-[2.5rem] border-2 border-purple-500/40 shadow-2xl shadow-purple-500/20 hover:shadow-purple-500/30 transform md:rotate-1 hover:rotate-0 transition-all duration-700 hover:-translate-y-2 overflow-hidden`}>
               {/* Animated gradient background */}
               <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 via-purple-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-              {/* Floating orbs */}
-              <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000"></div>
-              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-blue-400/30 to-purple-400/30 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-1000 delay-150"></div>
+              {/* Floating orbs - Reduced blur on mobile */}
+              <div className={`absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-purple-400/30 to-pink-400/30 rounded-full ${isMobile ? 'blur-2xl' : 'blur-3xl'} group-hover:scale-125 transition-transform duration-1000`}></div>
+              <div className={`absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-tr from-blue-400/30 to-purple-400/30 rounded-full ${isMobile ? 'blur-2xl' : 'blur-3xl'} group-hover:scale-125 transition-transform duration-1000 delay-150`}></div>
 
               <div className="relative z-10">
                 <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-600 group-hover:scale-110 transition-all duration-500">
@@ -804,9 +869,9 @@ const IdentitySection = () => {
             </div>
           </div>
 
-          {/* Card 3:Legal-First Web3-Overlays Influence Engine */}
-          <div className="md:col-span-5 md:col-start-3 md:-mt-20 group interactive-hover z-30">
-            <div className="relative bg-white/60 backdrop-blur-xl p-10 rounded-[2rem] border-l-8 border-emerald-500 border-t border-r border-b border-t-white/40 border-r-white/40 border-b-white/40 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-1">
+          {/* Card 3: Legal-First Web3 - Overlays Influence Engine */}
+          <div className="md:col-span-5 md:col-start-3 md:mt-0 group interactive-hover z-30 p-4 md:p-8">
+            <div className={`relative bg-white/60 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-xl'} p-10 rounded-[2rem] border-l-8 border-emerald-500 border-t border-r border-b border-t-white/40 border-r-white/40 border-b-white/40 shadow-xl hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 hover:-translate-y-1`}>
               <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mb-6 text-emerald-600 group-hover:scale-110 transition-transform duration-500">
                 <ShieldCheck size={32} />
               </div>
@@ -816,16 +881,18 @@ const IdentitySection = () => {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 
 const PhilosophySection = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section id="philosophy" className="py-24 bg-white relative overflow-hidden">
-      {/* Subtle Background Effects */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-pink-100/30 rounded-full blur-[150px]"></div>
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full blur-[120px]"></div>
+      {/* Subtle Background Effects - Reduced blur on mobile */}
+      <div className={`absolute top-0 right-0 w-[600px] h-[600px] bg-pink-100/30 rounded-full ${isMobile ? 'blur-[80px]' : 'blur-[150px]'}`}></div>
+      <div className={`absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-100/30 rounded-full ${isMobile ? 'blur-[60px]' : 'blur-[120px]'}`}></div>
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
@@ -905,6 +972,8 @@ const ValleyCastSection = () => {
 };
 
 const TeamSection = () => {
+  const isMobile = useIsMobile();
+
   return (
     <section id="team" className="py-32 bg-bv-background relative overflow-hidden">
       {/* Background Decor-Fluid Gradients */}
@@ -925,7 +994,7 @@ const TeamSection = () => {
           {teamData.map((member, index) => (
             <div
               key={index}
-              className="bg-white/40 backdrop-blur-xl rounded-[2.5rem] overflow-hidden shadow-xl shadow-bv-primary/5 hover:shadow-2xl hover:bg-white/60 transition-all duration-300 group border border-white/50 interactive-hover"
+              className={`bg-white/40 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-xl'} rounded-[2.5rem] overflow-hidden shadow-xl shadow-bv-primary/5 hover:shadow-2xl hover:bg-white/60 transition-all duration-300 group border border-white/50 interactive-hover`}
             >
               <div className={`h-2 w-full bg-gradient-to-r ${member.color} opacity-80`}></div>
               <div className="p-8 flex flex-col items-center text-center">
@@ -970,12 +1039,14 @@ const XLogo = ({ size = 24, color = "currentColor", className = "" }) => (
 );
 
 const Footer = () => {
+  const isMobile = useIsMobile();
+
   return (
-    <footer id="contact" className="bg-white/80 backdrop-blur-lg pt-24 pb-12 border-t border-white/20 relative z-10">
+    <footer id="contact" className={`bg-white/80 ${isMobile ? 'backdrop-blur-md' : 'backdrop-blur-lg'} pt-24 pb-12 border-t border-white/20 relative z-10`}>
       <div className="container mx-auto px-6">
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <img src="/BlockValley_Logo_Dark.png" alt="Logo" className="h-10 w-auto mb-8 opacity-90" />
+            <img src="/BlockValley_Logo_Dark.png" alt="Logo" className="h-10 w-auto mb-8 opacity-90" loading="eager" />
             <p className="text-xl text-slate-600 font-medium mb-8 max-w-md leading-relaxed">
               Combining capital, technology, narrative, and humanity to build the frontier.
             </p>
