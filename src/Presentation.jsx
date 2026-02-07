@@ -1,30 +1,45 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Trophy, 
-  Zap, 
-  ShieldCheck, 
-  Play, 
-  Hammer, 
-  TrendingUp, 
-  Users, 
-  Target, 
-  Star, 
-  ChevronRight, 
+import {
+  Trophy,
+  ShieldCheck,
+  Play,
+  Hammer,
+  Star,
+  ChevronRight,
   ChevronLeft,
-  Layout,
   Cpu,
   Globe,
-  Heart,
-  Eye,
   Rocket,
   Home
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+// Mobile detection hook
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent)
+        || window.innerWidth < 768
+        || ('ontouchstart' in window)
+        || (navigator.maxTouchPoints > 0);
+      setIsMobile(mobile);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
+
 const Presentation = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const isMobile = useIsMobile();
 
   const slides = [
     // Slide 1: Title
@@ -142,25 +157,25 @@ const Presentation = () => {
       content: (
         <div className="flex flex-col md:flex-row gap-4 items-stretch h-full">
           {[
-            { 
-              step: "01. PLAY", 
-              layer: "Entertainment", 
-              color: "border-[#00FF85]", 
-              icon: <Trophy />, 
+            {
+              step: "01. PLAY",
+              layer: "Entertainment",
+              color: "border-[#00FF85]",
+              icon: <Trophy />,
               desc: "Earn attention and emotional buy-in through live formats."
             },
-            { 
-              step: "02. BUILD", 
-              layer: "Transition", 
-              color: "border-[#00D1FF]", 
-              icon: <Hammer />, 
+            {
+              step: "02. BUILD",
+              layer: "Transition",
+              color: "border-[#00D1FF]",
+              icon: <Hammer />,
               desc: "Convert curiosity into strategy and digital identity."
             },
-            { 
-              step: "03. GROW", 
-              layer: "Infrastructure", 
-              color: "border-[#FF007A]", 
-              icon: <Rocket />, 
+            {
+              step: "03. GROW",
+              layer: "Infrastructure",
+              color: "border-[#FF007A]",
+              icon: <Rocket />,
               desc: "Fully build and scale Web3 presence with long-term alignment."
             }
           ].map((item, i) => (
@@ -303,7 +318,7 @@ const Presentation = () => {
     setDirection(1);
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
-  
+
   const prevSlide = () => {
     setDirection(-1);
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
@@ -311,7 +326,13 @@ const Presentation = () => {
 
   const current = slides[currentSlide];
 
-  const slideVariants = {
+  const slideVariants = isMobile ? {
+    // Simplified animations for mobile - no spring physics
+    enter: () => ({ opacity: 0 }),
+    center: { opacity: 1 },
+    exit: () => ({ opacity: 0 })
+  } : {
+    // Full animations for desktop
     enter: (direction) => ({
       x: direction > 0 ? 1000 : -1000,
       opacity: 0
@@ -335,16 +356,17 @@ const Presentation = () => {
 
   return (
     <div className="h-screen bg-[#0A0A0A] text-white flex flex-col font-sans overflow-hidden [&_h1]:text-white [&_h2]:text-white [&_h3]:text-white [&_h4]:text-white [&_h5]:text-white [&_h6]:text-white">
-      {/* Background Gradient Effect */}
-      <div className={`fixed inset-0 bg-gradient-to-br ${current.bg} opacity-20 blur-[100px] transition-all duration-1000`} />
+      {/* Background Gradient Effect - Reduce blur on mobile */}
+      <div className={`fixed inset-0 bg-gradient-to-br ${current.bg} ${isMobile ? 'opacity-15 blur-[50px]' : 'opacity-20 blur-[100px]'} transition-all duration-1000`} />
 
       {/* Header */}
       <nav className="relative z-10 p-4 md:p-6 flex justify-between items-center flex-shrink-0">
         <div className="flex items-center gap-2 md:gap-3">
-          <img 
-            src="/LABS_2.png" 
-            alt="Block Valley Labs" 
+          <img
+            src="/LABS_2.png"
+            alt="Block Valley Labs"
             className="h-8 md:h-12 object-contain"
+            loading="eager"
           />
         </div>
         <div className="flex items-center gap-4 md:gap-8">
@@ -353,7 +375,7 @@ const Presentation = () => {
             <span>Infrastructure</span>
             <span>Integrity</span>
           </div>
-          <Link 
+          <Link
             to="/"
             className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors text-sm md:text-base"
           >
@@ -373,14 +395,16 @@ const Presentation = () => {
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 }
-            }}
-            drag="x"
+            transition={isMobile ?
+              // Faster, simpler transitions on mobile
+              { duration: 0.3, ease: "easeOut" } :
+              // Smoother spring animations on desktop
+              { x: { type: "spring", stiffness: 300, damping: 30 }, opacity: { duration: 0.2 } }
+            }
+            drag={isMobile ? false : "x"}
             dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(e, { offset, velocity }) => {
+            dragElastic={isMobile ? 0 : 1}
+            onDragEnd={isMobile ? undefined : (e, { offset, velocity }) => {
               const swipe = swipePower(offset.x, velocity.x);
 
               if (swipe < -swipeConfidenceThreshold) {
@@ -396,10 +420,11 @@ const Presentation = () => {
                 <div className="flex flex-col items-center text-center space-y-6 md:space-y-8">
                   <div className="space-y-2 md:space-y-4 flex flex-col items-center">
                     {current.title === "Block Valley {LABS}" ? (
-                      <img 
-                        src="/LABS_2.png" 
-                        alt="Block Valley Labs" 
+                      <img
+                        src="/LABS_2.png"
+                        alt="Block Valley Labs"
                         className="w-full max-w-2xl md:max-w-4xl h-auto object-contain"
+                        loading="eager"
                       />
                     ) : (
                       <h1 className="text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black uppercase italic tracking-tighter leading-none">
@@ -440,13 +465,13 @@ const Presentation = () => {
       {/* Footer Navigation */}
       <footer className="relative z-10 p-4 md:p-6 flex justify-between items-center flex-shrink-0">
         <div className="flex gap-3 md:gap-4">
-          <button 
+          <button
             onClick={prevSlide}
             className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-colors"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
-          <button 
+          <button
             onClick={nextSlide}
             className="group h-12 md:h-14 px-6 md:px-10 rounded-full bg-white text-black font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform text-xs md:text-sm"
           >
@@ -460,8 +485,8 @@ const Presentation = () => {
 
       {/* Interactive Element: Funnel indicator (bottom) */}
       <div className="fixed bottom-0 left-0 w-full h-1 flex bg-white/5 z-20">
-        <div 
-          className="h-full bg-white transition-all duration-500 ease-out" 
+        <div
+          className="h-full bg-white transition-all duration-500 ease-out"
           style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
         />
       </div>

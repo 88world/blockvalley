@@ -8,15 +8,18 @@ const PageTransition = ({ children }) => {
 
   useEffect(() => {
     if (location !== displayLocation) {
-      setTransitionStage('fadeOut');
+      // Use setTimeout to avoid synchronous state update warning during render phase
+      const timer = setTimeout(() => {
+        setTransitionStage('fadeOut');
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [location, displayLocation]);
 
   return (
     <div
-      className={`${
-        transitionStage === 'fadeOut' ? 'opacity-0' : 'opacity-100'
-      } transition-opacity duration-300 ease-in-out`}
+      className={`${transitionStage === 'fadeOut' ? 'opacity-0' : 'opacity-100'
+        } transition-opacity duration-300 ease-in-out`}
       onTransitionEnd={() => {
         if (transitionStage === 'fadeOut') {
           setTransitionStage('fadeIn');
